@@ -22,3 +22,9 @@ Edit configuration for ```MainLoop.java```:
  - Paste ```-Djava.library.path=libs/natives/linux>``` to ```VM Options```
  - **Note:** change ```/linux``` to ```/windows``` if on windows
  
+ You should now be able to run ```MainLoop```
+
+## NOTE: Before doing any changes!!
+
+ - Go under ```VCS > Git > Pull..``` and click ```Pull``` to update your local project
+ 
