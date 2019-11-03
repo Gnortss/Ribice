@@ -1,0 +1,12 @@
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
+.idea/
+
+# OS
+.DS_Store
+
+# Misc
+out/
+libs/natives/
