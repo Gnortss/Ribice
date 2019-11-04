@@ -18,10 +18,10 @@ public class MasterRenderer {
 
     private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 
-    public void render(Light sun, Camera camera) {
+    public void render(List<Light> lights, Camera camera) {
         renderer.prepare();
         shader.start();
-        shader.loadLight(sun);
+        shader.loadLights(lights);
         shader.loadViewMatrix(camera);
 
         renderer.render(entities);
