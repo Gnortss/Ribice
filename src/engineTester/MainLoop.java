@@ -28,6 +28,7 @@ public class MainLoop {
         texture.setReflectivity(0.5f);
 
         Entity dragon = new Entity(staticModel, new Vector3f(0, -5, -50), 0, 0, 0, 1);
+        Light light = new Light(new Vector3f(0, 5, -30), new Vector3f(1, 1, 1), new Vector3f(1, 0.02f, 0.003f));
 
         List<Light> lights = new ArrayList<>();
         lights.add(new Light(new Vector3f(-10,15, -30), new Vector3f(1, 0, 0)));
