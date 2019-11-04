@@ -31,9 +31,10 @@ public class MainLoop {
         Light light = new Light(new Vector3f(0, 5, -30), new Vector3f(1, 1, 1), new Vector3f(1, 0.02f, 0.003f));
 
         List<Light> lights = new ArrayList<>();
-        lights.add(new Light(new Vector3f(-10,15, -30), new Vector3f(1, 0, 0)));
-        lights.add(new Light(new Vector3f(0,15, -30), new Vector3f(0, 1, 0)));
-        lights.add(new Light(new Vector3f(10,15, -30), new Vector3f(0, 0, 1)));
+        lights.add(light);
+        lights.add(new Light(new Vector3f(-10,5, -45), new Vector3f(1, 0, 0), new Vector3f(1, 0.02f, 0.003f)));
+        lights.add(new Light(new Vector3f(0,5, -45), new Vector3f(0, 1, 0), new Vector3f(1, 0.02f, 0.003f)));
+        lights.add(new Light(new Vector3f(10,5, -45), new Vector3f(0, 0, 1), new Vector3f(1, 0.02f, 0.003f)));
 
         Camera camera = new Camera();
 
