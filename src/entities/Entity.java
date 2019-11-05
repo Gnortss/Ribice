@@ -1,5 +1,6 @@
 package entities;
 
+import models.RawModel;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -9,6 +10,9 @@ public class Entity {
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
+
+    private boolean containsLineModel = false;
+    private RawModel lineModel;
 
     public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         this.model = model;
@@ -29,6 +33,17 @@ public class Entity {
         this.rotX += dx;
         this.rotY += dy;
         this.rotZ += dz;
+    }
+
+    public boolean containsLineModel() { return this.containsLineModel; }
+
+    public RawModel getLineModel() {
+        return lineModel;
+    }
+
+    public void setLineModel(RawModel lineModel) {
+        this.containsLineModel = true;
+        this.lineModel = lineModel;
     }
 
     public TexturedModel getModel() {
