@@ -30,12 +30,12 @@ public class Maths {
             float inclination = (float) Math.acos(1 - 2 * t);
             float azimuth = (float) (angleIncrement * i);
 
-            positions[6*i] = 0f;
-            positions[6*i+1] = 0f;
+            positions[6*i] = -30f;
+            positions[6*i+1] = 2f;
             positions[6*i+2] = 0f;
-            positions[6*i+3] = (float) (Math.cos(inclination)) * -25; // X
-            positions[6*i+4] = (float) (Math.sin(inclination) * Math.sin(azimuth)) * 25; // Y
-            positions[6*i+5] = (float) (Math.sin(inclination) * Math.cos(azimuth)) * 25; // Z
+            positions[6*i+3] = (float) (Math.cos(inclination)) * -50 -30; // X
+            positions[6*i+4] = (float) (Math.sin(inclination) * Math.sin(azimuth)) * 50 + 2; // Y
+            positions[6*i+5] = (float) (Math.sin(inclination) * Math.cos(azimuth)) * 50; // Z
         }
 
         return loader.loadLinesToVAO(positions);

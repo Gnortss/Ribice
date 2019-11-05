@@ -23,22 +23,22 @@ public class MainLoop {
         Loader loader = new Loader();
 
         // create RawModel of the dragon and then TexturedModel from RawModel, Texture
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
-        TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("white")));
+        RawModel model = OBJLoader.loadObjModel("fish", loader);
+        TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("fish_colormap")));
         ModelTexture texture = staticModel.getTexture();
         texture.setShineDamper(10);
         texture.setReflectivity(0.5f);
 
-        Entity dragon = new Entity(staticModel, new Vector3f(0, -5, -50), 0, 0, 0, 1);
-        Light light = new Light(new Vector3f(0, 5, -30), new Vector3f(1, 1, 1), new Vector3f(1, 0.02f, 0.003f));
+        Entity fish = new Entity(staticModel, new Vector3f(0, 0, -30), 0, 0, 0, 1);
+        Light light = new Light(new Vector3f(0, 5, -0), new Vector3f(1, 1, 1), new Vector3f(1, 0.02f, 0.003f));
 
         List<Light> lights = new ArrayList<>();
         lights.add(light);
-        lights.add(new Light(new Vector3f(-10,5, -45), new Vector3f(1, 0, 0), new Vector3f(1, 0.02f, 0.003f)));
-        lights.add(new Light(new Vector3f(0,5, -45), new Vector3f(0, 1, 0), new Vector3f(1, 0.02f, 0.003f)));
-        lights.add(new Light(new Vector3f(10,5, -45), new Vector3f(0, 0, 1), new Vector3f(1, 0.02f, 0.003f)));
+        lights.add(new Light(new Vector3f(-10,5, -0), new Vector3f(1, 0, 0), new Vector3f(1, 0.02f, 0.003f)));
+        lights.add(new Light(new Vector3f(0,5, -0), new Vector3f(0, 1, 0), new Vector3f(1, 0.02f, 0.003f)));
+        lights.add(new Light(new Vector3f(10,5, -0), new Vector3f(0, 0, 1), new Vector3f(1, 0.02f, 0.003f)));
 
-        dragon.setLineModel(Maths.pointOnSphere(loader, 1000, 1f));
+        fish.setLineModel(Maths.pointOnSphere(loader, 1000, 1f));
 
         Camera camera = new Camera();
 
@@ -46,14 +46,14 @@ public class MainLoop {
         while(!Display.isCloseRequested()) {
 
             if(Keyboard.isKeyDown(Keyboard.KEY_K))
-                dragon.increaseRotation(0, -0.2f, 0);
+                fish.increaseRotation(0, -0.2f, 0);
             else if(Keyboard.isKeyDown(Keyboard.KEY_L))
-                dragon.increaseRotation(0, 0.2f, 0);
+                fish.increaseRotation(0, 0.2f, 0);
 
             camera.move();
 
             // To render each entity call:
-            renderer.processEntity(dragon);
+            renderer.processEntity(fish);
 
             renderer.render(lights, camera);
 

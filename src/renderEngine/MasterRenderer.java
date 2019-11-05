@@ -23,7 +23,7 @@ public class MasterRenderer {
 
     private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 
-    private boolean debugMode = false;
+    private boolean debugMode = true;
 
     public void render(List<Light> lights, Camera camera) {
         renderer.prepare();
