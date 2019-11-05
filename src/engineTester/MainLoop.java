@@ -4,11 +4,13 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
 import textures.ModelTexture;
+import toolbox.Maths;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +38,17 @@ public class MainLoop {
         lights.add(new Light(new Vector3f(0,5, -45), new Vector3f(0, 1, 0), new Vector3f(1, 0.02f, 0.003f)));
         lights.add(new Light(new Vector3f(10,5, -45), new Vector3f(0, 0, 1), new Vector3f(1, 0.02f, 0.003f)));
 
+        dragon.setLineModel(Maths.pointOnSphere(loader, 1000, 1f));
+
         Camera camera = new Camera();
 
         MasterRenderer renderer = new MasterRenderer();
         while(!Display.isCloseRequested()) {
 
-            dragon.increaseRotation(0, 0.2f, 0);
+            if(Keyboard.isKeyDown(Keyboard.KEY_K))
+                dragon.increaseRotation(0, -0.2f, 0);
+            else if(Keyboard.isKeyDown(Keyboard.KEY_L))
+                dragon.increaseRotation(0, 0.2f, 0);
 
             camera.move();
 

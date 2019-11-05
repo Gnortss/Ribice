@@ -5,6 +5,8 @@ import models.RawModel;
 import models.TexturedModel;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
+import shaders.ShaderProgram;
+import shaders.StaticLineShader;
 import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
@@ -20,21 +22,26 @@ public class Renderer {
 
     private Matrix4f projectionMatrix;
     private StaticShader shader;
+    private StaticLineShader lineShader;
 
-    public Renderer(StaticShader shader){
+    public Renderer(StaticShader shader, StaticLineShader lineShader){
         this.shader = shader;
+        this.lineShader = lineShader;
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
         createProjectionMatrix();
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
+        lineShader.start();
+        lineShader.loadProjectionMatrix(projectionMatrix);
+        lineShader.stop();
     }
 
     public void prepare() {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(1, 0, 0, 1);
+        GL11.glClearColor(0.15f, 0.15f, 0.5f, 1);
     }
 
     public void render(Map<TexturedModel, List<Entity>> entities){
@@ -42,10 +49,30 @@ public class Renderer {
             prepareTexturedModels(model);
             List<Entity> batch = entities.get(model);
             for(Entity entity:batch) {
-                prepareInstance(entity);
+                prepareInstance(entity, "default");
                 GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModel(model);
+        }
+    }
+
+    public void renderLines(Map<TexturedModel, List<Entity>> entities) {
+        for(TexturedModel model:entities.keySet()) {
+            List<Entity> batch = entities.get(model);
+            for(Entity entity:batch) {
+                if(!entity.containsLineModel())
+                    continue;
+                RawModel lineModel = entity.getLineModel();
+
+                GL30.glBindVertexArray(lineModel.getVaoID());
+                GL20.glEnableVertexAttribArray(0);
+
+                prepareInstance(entity, "lineShader");
+                GL11.glDrawArrays(GL11.GL_LINES, 0, lineModel.getVertexCount());
+
+                GL20.glDisableVertexAttribArray(0);
+                GL30.glBindVertexArray(0);
+            }
         }
     }
 
@@ -71,10 +98,13 @@ public class Renderer {
         GL30.glBindVertexArray(0);
     }
 
-    private void prepareInstance(Entity entity) {
+    private void prepareInstance(Entity entity, String shader_type) {
         Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
                 entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
-        shader.loadTransformationMatrix(transformationMatrix);
+        if(shader_type.equals("default"))
+            shader.loadTransformationMatrix(transformationMatrix);
+        else if(shader_type.equals("lineShader"))
+            lineShader.loadTransformationMatrix(transformationMatrix);
     }
 
     private void createProjectionMatrix(){
