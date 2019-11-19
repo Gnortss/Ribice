@@ -1,21 +1,17 @@
 package entities;
 
-import models.RawModel;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Entity {
 
-    private TexturedModel model;
+    private TexturedModel texturedModel;
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
 
-    private boolean containsLineModel = false;
-    private RawModel lineModel;
-
-    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        this.model = model;
+    public Entity(TexturedModel texturedModel, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        this.texturedModel = texturedModel;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
@@ -35,23 +31,12 @@ public class Entity {
         this.rotZ += dz;
     }
 
-    public boolean containsLineModel() { return this.containsLineModel; }
-
-    public RawModel getLineModel() {
-        return lineModel;
+    public TexturedModel getTexturedModel() {
+        return texturedModel;
     }
 
-    public void setLineModel(RawModel lineModel) {
-        this.containsLineModel = true;
-        this.lineModel = lineModel;
-    }
-
-    public TexturedModel getModel() {
-        return model;
-    }
-
-    public void setModel(TexturedModel model) {
-        this.model = model;
+    public void setTexturedModel(TexturedModel texturedModel) {
+        this.texturedModel = texturedModel;
     }
 
     public Vector3f getPosition() {

@@ -1,6 +1,6 @@
 package renderEngine;
 
-import models.RawModel;
+import models.Model;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -13,10 +13,10 @@ import java.util.List;
 
 public class OBJLoader {
 
-    public static RawModel loadObjModel(String fileName, Loader loader) {
+    public static Model loadObjModel(String fileName, Loader loader) {
         FileReader fr = null;
         try {
-            fr = new FileReader(new File("res/" + fileName + ".obj"));
+            fr = new FileReader(new File("res/models/" + fileName + ".obj"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class OBJLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
+        return loader.createModel(verticesArray, textureArray, normalsArray, indicesArray);
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,
