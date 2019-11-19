@@ -1,6 +1,7 @@
 package shaders;
 
 import entities.Light;
+import materials.Material;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -74,6 +75,16 @@ public class DefaultShader {
         Vector3f color = light.getColor();
         GL20.glUniform3f(uniform_location.get("lightPosition"), pos.x, pos.y, pos.z);
         GL20.glUniform3f(uniform_location.get("lightColor"), color.x, color.y, color.z);
+    }
+
+    public void useMaterial(Material mat) {
+        Vector3f a = mat.getAmbient();
+        Vector3f d = mat.getDiffuse();
+        Vector3f s = mat.getSpecular();
+        GL20.glUniform3f(uniform_location.get("material.ambient"), a.x, a.y, a.z);
+        GL20.glUniform3f(uniform_location.get("material.diffuse"), d.x, d.y, d.z);
+        GL20.glUniform3f(uniform_location.get("material.specular"), s.x, s.y, s.z);
+        GL20.glUniform1f(uniform_location.get("material.shininess"), mat.getShininess());
     }
 
     public void loadMatrix(Matrix4f matrix, MatrixType type) {

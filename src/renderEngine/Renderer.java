@@ -58,7 +58,7 @@ public class Renderer {
 
             /* Load material specific variables to shader */
             Material mat = texturedModel.getMaterial();
-            // load variables here:
+            shader.useMaterial(mat);
 
             /* Bind texture */
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
