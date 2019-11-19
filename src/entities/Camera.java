@@ -6,12 +6,17 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera {
 
     private Vector3f position = new Vector3f(0, 0, 0);
-    private float pitch;
-    private float yaw;
-    private float roll;
+    private float rotX = 0;
+    private float rotY = 0;
+    private float rotZ = 0;
 
-    public Camera() {
+    public Camera() {}
 
+    public Camera(Vector3f position, Vector3f rotation) {
+        this.position = position;
+        this.rotX = rotation.x;
+        this.rotY = rotation.y;
+        this.rotZ = rotation.z;
     }
 
     public void move() {
@@ -32,15 +37,15 @@ public class Camera {
         return position;
     }
 
-    public float getPitch() {
-        return pitch;
+    public float getRotX() {
+        return rotX;
     }
 
-    public float getYaw() {
-        return yaw;
+    public float getRotY() {
+        return rotY;
     }
 
-    public float getRoll() {
-        return roll;
+    public float getRotZ() {
+        return rotZ;
     }
 }

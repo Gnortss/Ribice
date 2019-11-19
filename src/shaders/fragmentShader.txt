@@ -1,48 +1,45 @@
 #version 400 core
 
-in vec2 pass_textureCoordinates;
-in vec3 surfaceNormal;
-in vec3 toLightVector[5];
-in vec3 toCameraVector;
+in vec2 textureCoordinates;
+in vec3 normal;
+in vec3 lightDirection;
+in vec3 viewDirection;
 
-out vec4 out_Color;
+out vec4 FragColor;
 
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+};
+
+uniform Material material;
 uniform sampler2D modelTexture;
-uniform vec3 lightColor[5];
-uniform vec3 attenuation[5];
-uniform float shineDamper;
-uniform float reflectivity;
+uniform vec3 lightColor;
 
-void main(void){
+void main(void) {
+    // Color of the fragment based on texture
+    vec3 objectColor = texture(modelTexture, textureCoordinates).xyz;
 
-    vec3 unitNormal = normalize(surfaceNormal);
-
-    vec3 totalDiffuse = vec3(0.0);
-    vec3 totalSpecular = vec3(0.0);
-
-    for(int i = 0; i < 5; i++){
-        float dist = length(toLightVector[i]);
-        float attFactor = attenuation[i].x + (attenuation[i].y * dist) + (attenuation[i].z * dist * dist);
-        vec3 unitLightVector = normalize(toLightVector[i]);
-
-        float nDot1 = dot(unitNormal, unitLightVector);
-        float brightness = max(nDot1, 0.2);
-
-        vec3 unitVectorToCamera = normalize(toCameraVector);
-        vec3 lightDirection = -unitLightVector;
-        vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
-
-        float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
-        specularFactor = max(specularFactor, 0.0);
-        float dampedFactor = pow(specularFactor, shineDamper);
-
-        totalDiffuse = totalDiffuse + (dampedFactor * reflectivity * lightColor[i])/attFactor;
-        totalSpecular = totalSpecular + (brightness * lightColor[i])/attFactor;
-    }
-    
     // Ambient lighting
-    totalDiffuse = max(totalDiffuse, 0.2);
+    vec3 ambient = vec3(0.1) * (lightColor * material.ambient);
 
-	out_Color =  vec4(totalDiffuse, 1.0) * texture(modelTexture,pass_textureCoordinates) + vec4(totalSpecular, 1.0);
+    vec3 lightDir = normalize(lightDirection);
+    vec3 norm = normalize(normal);
 
+    // Diffuse lighting
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = lightColor * (diff * material.diffuse);
+
+    // Specular lighting
+    vec3 reflectDir = reflect(-lightDir, norm);
+    vec3 viewDir = normalize(viewDirection);
+    // 32 -> shininess, lower the value -> the light will spread more
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = lightColor * (spec * material.specular);
+
+
+    vec3 result = (ambient + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);
 }
