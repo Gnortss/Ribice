@@ -20,15 +20,27 @@ public class MainLoop {
 
         /* Load model from file */
         Model model = OBJLoader.loadObjModel("fish", loader);
+        Model model2 = OBJLoader.loadObjModel("dragon", loader);
         /* Load texture and create TexturedModel */
         TexturedModel staticModel = new TexturedModel(model, new Material(loader.loadTexture("fish_colormap")));
+        TexturedModel staticModel2 = new TexturedModel(model2, new Material(loader.loadTexture("white")));
         /* Create entity from TexturedModel*/
-        Entity fish = new Entity(staticModel, new Vector3f(0, 0, -30), 0, 0, 0, 1);
+        Entity fish = new Entity(staticModel, new Vector3f(0, 0, -30), 0, 0, 0, 0.3f);
+        Entity fish1 = new Entity(staticModel, new Vector3f(0, 0, -100), 0, 90, 0, 1);
+        Entity dragon = new Entity(staticModel2, new Vector3f(0, 0, -30), 0, 0, 0, 1);
 
         Light light = new Light(new Vector3f(0, 5, -0), new Vector3f(1, 1, 1));
 
         Camera camera = new Camera();
 
+        Scene scene = new Scene();
+        fish.addChild(fish1);
+        staticModel.addChild(fish);
+        scene.addChild(staticModel);
+        scene.addCamera(camera);
+        scene.addLight(light);
+
+        System.out.println(scene.toString());
         Renderer renderer = new Renderer();
         while(!Display.isCloseRequested()) {
 
@@ -39,10 +51,11 @@ public class MainLoop {
 
             camera.move();
 
-            // To render each entity call:
-            renderer.addEntity(fish);
-
-            renderer.render(camera, light);
+            renderer.render(scene);
+//             To render each entity call:
+//            renderer.addEntity(fish);
+//
+//            renderer.render(camera, light);
 
             WindowManager.update();
 

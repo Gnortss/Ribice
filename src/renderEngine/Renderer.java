@@ -24,6 +24,8 @@ public class Renderer {
     private DefaultShader shader;
     private List<Entity> entities = new ArrayList<>();
 
+
+    private int vertexCount = 0;
     public Renderer(){
         this.shader = new DefaultShader();
         glSettings();
@@ -31,6 +33,45 @@ public class Renderer {
 
         shader.use();
         shader.loadMatrix(projectionMatrix, MatrixType.PROJECTION);
+        shader.stopUsing();
+    }
+
+    public void render(Scene scene){
+        clear();
+        shader.use();
+        shader.useLightSource(scene.getLights().get(0));
+        shader.loadMatrix(scene.getMainCamera().getViewMatrix(), MatrixType.VIEW);
+
+        scene.traverseForRendering((TexturedModel tm) -> {
+            vertexCount = tm.getModel().getVertexCount();
+
+            /* Bind VAO and VBOs */
+            GL30.glBindVertexArray(tm.getModel().getVao());
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glEnableVertexAttribArray(1);
+            GL20.glEnableVertexAttribArray(2);
+
+            /* Load material specific variables to shader */
+            Material mat = tm.getMaterial();
+            shader.useMaterial(mat);
+
+            /* Bind texture */
+            GL13.glActiveTexture(GL13.GL_TEXTURE0);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mat.getTexture());
+        }, (Matrix4f transformationMatrix) -> {
+            /* Load transformationMatrix to shader */
+            shader.loadMatrix(transformationMatrix, MatrixType.TRANSFORMATION);
+        }, () -> {
+            /* Draw model */
+            GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
+        }, () -> {
+            /* Unbind VBOs and VAO */
+            GL20.glDisableVertexAttribArray(2);
+            GL20.glDisableVertexAttribArray(1);
+            GL20.glDisableVertexAttribArray(0);
+            GL30.glBindVertexArray(0);
+        });
+
         shader.stopUsing();
     }
 

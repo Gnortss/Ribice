@@ -1,13 +1,17 @@
 package entities;
 
 import org.lwjgl.util.vector.Vector3f;
+import renderEngine.Node;
+import utils.NodeType;
 
-public class Light {
+public class Light extends Node {
 
     private Vector3f position;
     private Vector3f color;
 
     public Light(Vector3f position, Vector3f color) {
+        super(NodeType.LIGHT);
+
         this.position = position;
         this.color = color;
     }

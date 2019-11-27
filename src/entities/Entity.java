@@ -1,9 +1,13 @@
 package entities;
 
 import models.TexturedModel;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import renderEngine.Node;
+import utils.Maths;
+import utils.NodeType;
 
-public class Entity {
+public class Entity extends Node {
 
     private TexturedModel texturedModel;
     private Vector3f position;
@@ -11,6 +15,8 @@ public class Entity {
     private float scale;
 
     public Entity(TexturedModel texturedModel, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        super(NodeType.ENTITY);
+
         this.texturedModel = texturedModel;
         this.position = position;
         this.rotX = rotX;
@@ -77,5 +83,9 @@ public class Entity {
 
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    public Matrix4f getLocalTransform(){
+        return Maths.createTransformationMatrix(position, rotX, rotY, rotZ, scale);
     }
 }
