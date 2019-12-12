@@ -81,7 +81,7 @@ public class Renderer {
         /* Note: scene.mainCamera can't be null */
         shader.loadMatrix(scene.getMainCamera().getViewMatrix(), MatrixType.VIEW);
 
-        scene.buildHashMap(); /* recalculates global transform for each entity AND builds HashMap */
+        scene.buildHashMap(); /* groups entities by textured model */
         HashMap<TexturedModel, ArrayList<Entity>> m = scene.getEntities();
         m.forEach((TexturedModel model, ArrayList<Entity> list) -> {
             int vCount = model.getModel().getVertexCount();
@@ -116,52 +116,6 @@ public class Renderer {
         });
 
         shader.stopUsing();
-    }
-
-    public void render(Camera camera, Light light) {
-        clear();
-        shader.use();
-        shader.useLightSource(light);
-        shader.loadMatrix(Maths.createViewMatrix(camera), MatrixType.VIEW);
-
-        renderEntities();
-
-        shader.stopUsing();
-        entities.clear();
-    }
-
-    private void renderEntities() {
-        for (Entity entity : entities) {
-            TexturedModel texturedModel = entity.getTexturedModel();
-
-            /* Bind VAO and VBOs */
-            GL30.glBindVertexArray(texturedModel.getModel().getVao());
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glEnableVertexAttribArray(1);
-            GL20.glEnableVertexAttribArray(2);
-
-            /* Load material specific variables to shader */
-            Material mat = texturedModel.getMaterial();
-            shader.useMaterial(mat);
-
-            /* Bind texture */
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mat.getTexture());
-
-            /* Create and load entity's transformation matrix */
-            Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
-                    entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
-            shader.loadMatrix(transformationMatrix, MatrixType.TRANSFORMATION);
-
-            /* Draw */
-            GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-
-            /* Unbind VBOs and VAO */
-            GL20.glDisableVertexAttribArray(2);
-            GL20.glDisableVertexAttribArray(1);
-            GL20.glDisableVertexAttribArray(0);
-            GL30.glBindVertexArray(0);
-        }
     }
 
     /* Adds Entity object to entities list which will be rendered */
