@@ -8,6 +8,7 @@ import models.Model;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 
@@ -20,42 +21,28 @@ public class MainLoop {
 
         /* Load model from file */
         Model model = OBJLoader.loadObjModel("fish", loader);
-        Model model2 = OBJLoader.loadObjModel("dragon", loader);
+        Model model1 = OBJLoader.loadObjModel("test", loader);
+        Model model2 = OBJLoader.loadObjModel("debug", loader);
         /* Load texture and create TexturedModel */
-        TexturedModel staticModel = new TexturedModel(model, new Material(loader.loadTexture("fish_colormap")));
-        TexturedModel staticModel2 = new TexturedModel(model2, new Material(loader.loadTexture("white")));
-        /* Create entity from TexturedModel*/
-        Entity fish = new Entity(staticModel, new Vector3f(0, 0, -30), 0, 0, 0, 0.3f);
-        Entity fish1 = new Entity(staticModel, new Vector3f(0, 0, -100), 0, 90, 0, 1);
-        Entity dragon = new Entity(staticModel2, new Vector3f(0, 0, -30), 0, 0, 0, 1);
+        /* This debugMat is used for a cube which which will be positioned where the light is. TEMPORARY */
+        Material debugMat = new Material(loader.loadTexture("white"));
+        debugMat.setDiffuse(new Vector3f(0, 0, 0));
+        debugMat.setSpecular(new Vector3f(0, 0, 0));
 
-        Light light = new Light(new Vector3f(0, 5, -0), new Vector3f(1, 1, 1));
-
-        Camera camera = new Camera();
+        TexturedModel staticModel = new TexturedModel(model1, new Material(loader.loadTexture("white")));
+        TexturedModel staticModel1 = new TexturedModel(model, new Material(loader.loadTexture("fish_colormap")));
+        TexturedModel staticModel2 = new TexturedModel(model2, debugMat);
 
         Scene scene = new Scene();
-        fish.addChild(fish1);
-        staticModel.addChild(fish);
-        scene.addChild(staticModel);
-        scene.addCamera(camera);
-        scene.addLight(light);
+        scene.createSubmarine(staticModel, staticModel2);
+        Entity fish = scene.createFish(staticModel1, new Vector3f(0, 0, -5), new Vector3f(0, 0, 0));
 
-        System.out.println(scene.toString());
         Renderer renderer = new Renderer();
         while(!Display.isCloseRequested()) {
 
-            if(Keyboard.isKeyDown(Keyboard.KEY_K))
-                fish.increaseRotation(0, -0.2f, 0);
-            else if(Keyboard.isKeyDown(Keyboard.KEY_L))
-                fish.increaseRotation(0, 0.2f, 0);
-
-            camera.move();
+            scene.getSubmarine().move();
 
             renderer.render(scene);
-//             To render each entity call:
-//            renderer.addEntity(fish);
-//
-//            renderer.render(camera, light);
 
             WindowManager.update();
 
