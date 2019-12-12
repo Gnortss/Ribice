@@ -71,7 +71,7 @@ public class DefaultShader {
 
     /* Loads light variables to shader */
     public void useLightSource(Light light) {
-        Vector3f pos = light.getPosition();
+        Vector3f pos = light.getGlobalPosition();
         Vector3f color = light.getColor();
         GL20.glUniform3f(uniform_location.get("lightPosition"), pos.x, pos.y, pos.z);
         GL20.glUniform3f(uniform_location.get("lightColor"), color.x, color.y, color.z);

@@ -2,6 +2,7 @@ package utils;
 
 import entities.Camera;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
@@ -53,15 +54,17 @@ public class Maths {
     }
 
     public static Matrix4f createViewMatrix(Camera camera) {
-        Matrix4f viewMatrix = new Matrix4f();
-        viewMatrix.setIdentity();
-        Matrix4f.rotate((float) Math.toRadians(camera.getRotX()), new Vector3f(1, 0, 0), viewMatrix,
-                viewMatrix);
+        Matrix4f viewMatrix = camera.getParent().getGlobalTransform();
+        Matrix4f.translate(camera.getPosition(), viewMatrix, viewMatrix);
+//        Matrix4f viewMatrix = new Matrix4f();
+//        viewMatrix.setIdentity();
+//        Vector3f cameraPos = camera.getGlobalPosition();
+//        Vector3f negativeCameraPos = new Vector3f(-cameraPos.x,-cameraPos.y,-cameraPos.z);
+//        Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+        Matrix4f.rotate((float) Math.toRadians(camera.getRotX()), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
         Matrix4f.rotate((float) Math.toRadians(camera.getRotY()), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
         Matrix4f.rotate((float) Math.toRadians(camera.getRotZ()), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-        Vector3f cameraPos = camera.getPosition();
-        Vector3f negativeCameraPos = new Vector3f(-cameraPos.x,-cameraPos.y,-cameraPos.z);
-        Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+        viewMatrix = Matrix4f.invert(viewMatrix, null);
         return viewMatrix;
     }
 

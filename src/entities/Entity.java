@@ -1,81 +1,50 @@
 package entities;
 
 import models.TexturedModel;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Entity {
+public class Entity extends Node {
 
     private TexturedModel texturedModel;
-    private Vector3f position;
-    private float rotX, rotY, rotZ;
-    private float scale;
+    private Matrix4f globalTransform;
 
     public Entity(TexturedModel texturedModel, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        super();
+
         this.texturedModel = texturedModel;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
         this.rotZ = rotZ;
         this.scale = scale;
+
+        this.globalTransform = new Matrix4f();
+        this.globalTransform.setIdentity();
     }
 
-    public void increasePosition(float dx, float dy, float dz) {
-        this.position.x += dx;
-        this.position.y += dy;
-        this.position.z += dz;
-    }
-
-    public void increaseRotation(float dx, float dy, float dz) {
-        this.rotX += dx;
-        this.rotY += dy;
-        this.rotZ += dz;
-    }
-
+    /* Getters */
     public TexturedModel getTexturedModel() {
         return texturedModel;
     }
 
-    public void setTexturedModel(TexturedModel texturedModel) {
-        this.texturedModel = texturedModel;
-    }
+    public void setGlobal(Matrix4f t) { this.globalTransform = t; }
 
-    public Vector3f getPosition() {
-        return position;
-    }
+    public Matrix4f getGlobal() { return globalTransform; }
 
-    public void setPosition(Vector3f position) {
-        this.position = position;
-    }
+    /* Methods */
+    public void move() {
+        if(Keyboard.isKeyDown(Keyboard.KEY_W))
+            rotX -= .2f;
 
-    public float getRotX() {
-        return rotX;
-    }
+        if(Keyboard.isKeyDown(Keyboard.KEY_S))
+            rotX += .2f;
 
-    public void setRotX(float rotX) {
-        this.rotX = rotX;
-    }
+        if(Keyboard.isKeyDown(Keyboard.KEY_A))
+            rotY -= .2f;
 
-    public float getRotY() {
-        return rotY;
-    }
-
-    public void setRotY(float rotY) {
-        this.rotY = rotY;
-    }
-
-    public float getRotZ() {
-        return rotZ;
-    }
-
-    public void setRotZ(float rotZ) {
-        this.rotZ = rotZ;
-    }
-
-    public float getScale() {
-        return scale;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
+        if(Keyboard.isKeyDown(Keyboard.KEY_D))
+            rotY += .2f;
     }
 }

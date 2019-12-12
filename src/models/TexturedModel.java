@@ -2,7 +2,7 @@ package models;
 
 import materials.Material;
 
-public class TexturedModel {
+public class TexturedModel{
 
     private Model model;
     private Material material;
