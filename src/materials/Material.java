@@ -22,31 +22,35 @@ public class Material {
         return ambient;
     }
 
-    public void setAmbient(Vector3f ambient) {
+    public Material setAmbient(Vector3f ambient) {
         this.ambient = ambient;
+        return this;
     }
 
     public Vector3f getDiffuse() {
         return diffuse;
     }
 
-    public void setDiffuse(Vector3f diffuse) {
+    public Material setDiffuse(Vector3f diffuse) {
         this.diffuse = diffuse;
+        return this;
     }
 
     public Vector3f getSpecular() {
         return specular;
     }
 
-    public void setSpecular(Vector3f specular) {
+    public Material setSpecular(Vector3f specular) {
         this.specular = specular;
+        return this;
     }
 
     public float getShininess() {
         return shininess;
     }
 
-    public void setShininess(float shininess) {
+    public Material setShininess(float shininess) {
         this.shininess = shininess;
+        return this;
     }
 }

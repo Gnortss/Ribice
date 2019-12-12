@@ -1,26 +1,30 @@
 package renderEngine;
 
-import entities.Camera;
-import entities.Entity;
-import entities.Light;
-import entities.Node;
+import entities.*;
+import materials.Material;
+import models.Model;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.opengl.Texture;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public class Scene {
+    private Loader loader;
+
     private Node root;
-    private Entity submarine;
+    private Submarine submarine;
     private Camera mainCamera;
     private List<Light> lights;
     private HashMap<TexturedModel, ArrayList<Entity>> entities;
 
     private Matrix4f globalTransform;
     private Stack<Matrix4f> globalStack;
-    public Scene(){
+    public Scene(Loader loader){
+        this.loader = loader;
+
         this.root = new Node();
         this.lights = new ArrayList<>();
         this.entities = new HashMap<>();
@@ -46,30 +50,42 @@ public class Scene {
         this.root.removeChild(c);
     }
 
-    /* This method automatically creates Camera and Lights
-    *  It attaches all nodes correctly and adds whole tree(submarine) as a child to scene.root */
+    public void createSubmarine(){
+        /* Load models */
+        Model mBody = OBJLoader.loadObjModel("/submarine/body", loader);
+        Model mFlapsLR = OBJLoader.loadObjModel("/submarine/LR-Flaps", loader);
+        Model mFlapsUD = OBJLoader.loadObjModel("/submarine/UD-Flaps", loader);
+        Model mPropelers = OBJLoader.loadObjModel("/submarine/propelers", loader);
 
-    /* NOTE: TEMPORARY BEFORE WE CREATE Submarine which extends Entity class!!!!! */
-    public void createSubmarine(TexturedModel model, TexturedModel d){
-        Entity submarine = new Entity(model, new Vector3f(0, 0, 0), 0, 0, 0, 1f);
-        Entity e = new Entity(d, new Vector3f(0, .12f, 0.32f), 0, 0, 0, .1f);
+        /* Load textures */
+        int whiteTex = loader.loadTexture("white");
 
-        Camera camera = new Camera(new Vector3f(0, .2f, 0.8f), new Vector3f(0, 0, 0));
-        Light light = new Light(new Vector3f(0, .12f, 0.32f), new Vector3f(1, 1, 1));
+        /* Create Materials */
+        Material bodyMat = new Material(whiteTex)
+                .setAmbient(new Vector3f(199/255f, 239/255f, 41/255f))
+                .setDiffuse(new Vector3f(199/255f, 239/255f, 41/255f))
+                .setSpecular(new Vector3f(199/255f, 239/255f, 41/255f))
+                .setShininess(64);
+        Material propsMat = new Material(whiteTex)
+                .setAmbient(new Vector3f(55/255f, 55/255f, 55/255f))
+                .setDiffuse(new Vector3f(55/255f, 55/255f, 55/255f))
+                .setSpecular(new Vector3f(55/255f, 55/255f, 55/255f))
+                .setShininess(512);
 
-        submarine.addChild(camera);
-        submarine.addChild(e);
-        submarine.addChild(light);
+        /* Create Textured models */
+        TexturedModel bodyModel = new TexturedModel(mBody, bodyMat);
+        TexturedModel flapsLRModel = new TexturedModel(mFlapsLR, propsMat);
+        TexturedModel flapsUDModel = new TexturedModel(mFlapsUD, propsMat);
+        TexturedModel propelersModel = new TexturedModel(mPropelers, propsMat);
 
-        /*      submarine
-        *       /     \
-        *    camera    light  */
+        /* Create Submarine */
+        Submarine submarine = new Submarine(bodyModel, flapsLRModel, flapsUDModel, propelersModel);
+
+        this.submarine = submarine;
+        this.mainCamera = submarine.getCamera();
+        this.lights.add(submarine.getLight());
 
         this.addChild(submarine);
-
-        this.mainCamera = camera;
-        this.lights.add(light);
-        this.submarine = submarine;
     }
 
     /* Creates fish */
@@ -83,10 +99,9 @@ public class Scene {
 
     /* Calculates global transformation for each Entity
     *  Adds Entity to this.entities */
-    public void buildHashMap(){
+    public void calculateTransforms(){
         this.globalTransform = Matrix4f.setIdentity(new Matrix4f());
         this.globalStack = new Stack<>();
-        this.entities = new HashMap<>();
 
         this.root.traverse(
         (Node n) -> { /* Before */
@@ -94,11 +109,24 @@ public class Scene {
             globalTransform = Matrix4f.mul(globalTransform, n.getLocalTransform(), null);
             if(n instanceof Entity){
                 ((Entity) n).setGlobal(globalTransform);
-                addEntity((Entity) n);
             }
         }, (Node n) -> { /* After */
             globalTransform = globalStack.pop();
         });
+    }
+
+    public void buildHashMap(){
+        this.entities = new HashMap<>();
+
+        this.root.traverse(
+                (Node n) -> {
+                    if(n instanceof Entity)
+                        addEntity((Entity) n);
+                }, (Node n) -> {});
+    }
+
+    public void update(){
+        this.calculateTransforms();
     }
 
     private void addEntity(Entity e){

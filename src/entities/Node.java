@@ -58,17 +58,17 @@ public class Node {
     public void setPosition(Vector3f p) { this.position = p; }
 
     public void setRotation(Vector3f r) {
-        this.rotX = r.x;
-        this.rotY = r.y;
-        this.rotZ = r.z;
+        this.rotX = r.x % 360;
+        this.rotY = r.y % 360;
+        this.rotZ = r.z % 360;
     }
 
     public void setScale(float s) { this.scale = s; }
 
     public void rotateBy(Vector3f r) {
-        this.rotX += r.x;
-        this.rotY += r.y;
-        this.rotZ += r.z;
+        this.rotX = (this.rotX + r.x + 360) % 360;
+        this.rotY = (this.rotY + r.y + 360) % 360;
+        this.rotZ = (this.rotZ +  r.z + 360) % 360;
     }
 
     public void moveBy(Vector3f t) {

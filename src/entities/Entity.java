@@ -7,8 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Entity extends Node {
 
-    private TexturedModel texturedModel;
-    private Matrix4f globalTransform;
+    protected TexturedModel texturedModel;
+    protected Matrix4f globalTransform;
 
     public Entity(TexturedModel texturedModel, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super();
@@ -34,17 +34,17 @@ public class Entity extends Node {
     public Matrix4f getGlobal() { return globalTransform; }
 
     /* Methods */
-    public void move() {
+    public void move(float dt) {
         if(Keyboard.isKeyDown(Keyboard.KEY_W))
-            rotX -= .2f;
+            this.rotateBy(new Vector3f(-.2f, 0, 0));
 
         if(Keyboard.isKeyDown(Keyboard.KEY_S))
-            rotX += .2f;
+            this.rotateBy(new Vector3f(.2f, 0, 0));
 
         if(Keyboard.isKeyDown(Keyboard.KEY_A))
-            rotY -= .2f;
+            this.rotateBy(new Vector3f(0, -.2f, 0));
 
         if(Keyboard.isKeyDown(Keyboard.KEY_D))
-            rotY += .2f;
+            this.rotateBy(new Vector3f(0, .2f, 0));
     }
 }
