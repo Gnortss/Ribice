@@ -1,6 +1,8 @@
 package entities;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import utils.Maths;
 
@@ -12,17 +14,27 @@ public class Node {
     protected Node parent;
     protected List<Node> children;
     protected Vector3f position;
-    protected float rotX, rotY, rotZ;
+    protected Quaternion rotation;
     protected float scale;
+
+    protected Matrix4f global;
+    protected Matrix4f local;
+    protected boolean dirty;
 
     public Node(){
         this.parent = null;
         this.children = new ArrayList<>();
         this.position = new Vector3f(0, 0, 0);
-        this.rotX = 0;
-        this.rotY = 0;
-        this.rotZ = 0;
+        this.rotation = new Quaternion();
         this.scale = 1;
+
+        this.global = new Matrix4f();
+        this.global.setIdentity();
+
+        this.local = new Matrix4f();
+        this.local.setIdentity();
+
+        this.dirty = true;
     }
 
     /* Getters */
@@ -30,17 +42,7 @@ public class Node {
         return position;
     }
 
-    public float getRotX() {
-        return rotX;
-    }
-
-    public float getRotY() {
-        return rotY;
-    }
-
-    public float getRotZ() {
-        return rotZ;
-    }
+    public Quaternion getRotation() { return rotation; }
 
     public float getScale() {
         return scale;
@@ -54,28 +56,24 @@ public class Node {
         return parent;
     }
 
+    public Matrix4f getGlobal() { return global; }
+
     /* Setters */
-    public void setPosition(Vector3f p) { this.position = p; }
+    public Node setPosition(Vector3f p) { this.position = p; dirty = true; return this;}
 
-    public void setRotation(Vector3f r) {
-        this.rotX = r.x % 360;
-        this.rotY = r.y % 360;
-        this.rotZ = r.z % 360;
+    public Node setRotation(Quaternion r) {
+        this.rotation = r;
+        dirty = true;
+        return this;
     }
 
-    public void setScale(float s) { this.scale = s; }
+    public Node setScale(float s) { this.scale = s; dirty = true; return this;}
 
-    public void rotateBy(Vector3f r) {
-        this.rotX = (this.rotX + r.x + 360) % 360;
-        this.rotY = (this.rotY + r.y + 360) % 360;
-        this.rotZ = (this.rotZ +  r.z + 360) % 360;
-    }
-
-    public void moveBy(Vector3f t) {
-        Vector3f.add(this.position, t, this.position);
-    }
+    public Node setGlobal(Matrix4f m) { this.global = m; return this;}
 
     /* Methods */
+    public Node moveBy(Vector3f t) { Vector3f.add(this.position, t, this.position); dirty = true; return this; }
+
     public void addChild(Node c){
         c.parent = this;
         this.children.add(c);
@@ -93,7 +91,12 @@ public class Node {
     };
 
     public Matrix4f getLocalTransform() {
-        return Maths.createTransformationMatrix(this.position, this.rotX, this.rotY, this.rotZ, this.scale);
+        if(dirty){
+            dirty = false;
+            local = Maths.createTransformationMatrix(position, rotation, scale);
+            return local;
+        }
+        return local;
     }
 
     public Matrix4f getGlobalTransform() {
