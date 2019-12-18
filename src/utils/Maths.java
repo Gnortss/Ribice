@@ -35,7 +35,7 @@ public class Maths {
 
     public static Vector3f getAxis(Quaternion r, String a){
         switch (a){
-            case "back":    return new Vector3f(-(2.0f * (r.getX() * r.getZ() - r.getW() * r.getY())), -(2.0f * (r.getY() * r.getZ() + r.getW() * r.getX())), -(1.0f - 2.0f * (r.getX() * r.getX() + r.getY() * r.getY())));
+            case "forward":    return new Vector3f(-(2.0f * (r.getX() * r.getZ() - r.getW() * r.getY())), -(2.0f * (r.getY() * r.getZ() + r.getW() * r.getX())), -(1.0f - 2.0f * (r.getX() * r.getX() + r.getY() * r.getY())));
             case "up":      return new Vector3f(2.0f * (r.getX() * r.getY() + r.getW() * r.getZ()), 1.0f - 2.0f * (r.getX() * r.getX() + r.getZ() * r.getZ()), 2.0f * (r.getY() * r.getZ() - r.getW() * r.getX()));
             case "down":    return new Vector3f(-(2.0f * (r.getX() * r.getY() + r.getW() * r.getZ())), -(1.0f - 2.0f * (r.getX() * r.getX() + r.getZ() * r.getZ())), -(2.0f * (r.getY() * r.getZ() - r.getW() * r.getX())));
             case "right":   return new Vector3f(1.0f - 2.0f * (r.getY() * r.getY() + r.getZ() * r.getZ()), 2.0f * (r.getX() * r.getY() - r.getW() * r.getZ()), 2.0f * (r.getX() * r.getZ() + r.getW() * r.getY()));

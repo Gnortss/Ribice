@@ -53,8 +53,8 @@ public class Submarine extends Entity {
         Vector3f velocity = Maths.getAxis(rotation, "forward");
 
 
-        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) speed = Math.min(speed + ACCELERATION * dt, MAX_SPEED);
-        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) speed = Math.max(speed - ACCELERATION * dt, -MAX_SPEED);
+        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) speed = Math.min(speed + ACCELERATION * dt, MAX_SPEED);
+        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) speed = Math.max(speed - ACCELERATION * dt, -MAX_SPEED);
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) speed = 0;
         velocity.scale(speed);
         this.position = Vector3f.add(position, velocity, null);
@@ -83,12 +83,12 @@ public class Submarine extends Entity {
             dirty = true;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
-            Quaternion r = Maths.createFromAxisAngle(forward, -angularSpeed);
+            Quaternion r = Maths.createFromAxisAngle(forward, angularSpeed);
             Quaternion.mul(r, rotation, rotation);
             dirty = true;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_E)){
-            Quaternion r = Maths.createFromAxisAngle(forward, angularSpeed);
+            Quaternion r = Maths.createFromAxisAngle(forward, -angularSpeed);
             Quaternion.mul(r, rotation, rotation);
             dirty = true;
         }
