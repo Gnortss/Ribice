@@ -20,15 +20,9 @@ public class MainLoop {
 
         /* Load model from file */
         Model model = OBJLoader.loadObjModel("fish", loader);
-        Model model2 = OBJLoader.loadObjModel("debug", loader);
         /* Load texture and create TexturedModel */
-        /* This debugMat is used for a cube which which will be positioned where the light is. TEMPORARY */
-        Material debugMat = new Material(loader.loadTexture("white"));
-        debugMat.setDiffuse(new Vector3f(0, 0, 0));
-        debugMat.setSpecular(new Vector3f(0, 0, 0));
 
         TexturedModel staticModel1 = new TexturedModel(model, new Material(loader.loadTexture("fish_colormap")));
-        TexturedModel debugCube = new TexturedModel(model2, debugMat);
 
         Scene scene = new Scene(loader);
         scene.createSubmarine();
@@ -54,7 +48,6 @@ public class MainLoop {
 
 
             scene.getSubmarine().move(deltaTime);
-//            fish.move(deltaTime);
 
             scene.update();
             renderer.render(scene);
