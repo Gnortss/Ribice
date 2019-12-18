@@ -5,6 +5,7 @@ import materials.Material;
 import models.Model;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
@@ -90,8 +91,8 @@ public class Scene {
 
     /* Creates fish */
     /* NOTE: TEMPORARY BEFORE WE CREATE Fish which extends Entity class!!!!! */
-    public Entity createFish(TexturedModel model, Vector3f p, Vector3f r){
-        Entity fish = new Entity(model, p, r.x, r.y, r.z, 1f);
+    public Entity createFish(TexturedModel model, Vector3f p, Quaternion r){
+        Entity fish = new Entity(model, p, r, 1f);
         this.addChild(fish);
 
         return fish;
@@ -107,9 +108,7 @@ public class Scene {
         (Node n) -> { /* Before */
             globalStack.push(new Matrix4f(globalTransform));
             globalTransform = Matrix4f.mul(globalTransform, n.getLocalTransform(), null);
-            if(n instanceof Entity){
-                ((Entity) n).setGlobal(globalTransform);
-            }
+            n.setGlobal(globalTransform);
         }, (Node n) -> { /* After */
             globalTransform = globalStack.pop();
         });

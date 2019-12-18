@@ -2,6 +2,7 @@ package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import utils.Maths;
@@ -9,13 +10,11 @@ import utils.Maths;
 public class Camera extends Node {
     public Camera() { super(); }
 
-    public Camera(Vector3f position, Vector3f rotation) {
+    public Camera(Vector3f position, Quaternion rotation) {
         super();
 
         this.position = position;
-        this.rotX = rotation.x;
-        this.rotY = rotation.y;
-        this.rotZ = rotation.z;
+        this.rotation = rotation;
     }
 
     public Vector3f getGlobalPosition() {
@@ -26,17 +25,17 @@ public class Camera extends Node {
     }
 
     public void move() {
-        if(Keyboard.isKeyDown(Keyboard.KEY_W))
-            rotX += .2f;
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_S))
-            rotX -= .2f;
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_A))
-            rotY += .2f;
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_D))
-            rotY -= .2f;
+//        if(Keyboard.isKeyDown(Keyboard.KEY_W))
+//            rotX += .2f;
+//
+//        if(Keyboard.isKeyDown(Keyboard.KEY_S))
+//            rotX -= .2f;
+//
+//        if(Keyboard.isKeyDown(Keyboard.KEY_A))
+//            rotY += .2f;
+//
+//        if(Keyboard.isKeyDown(Keyboard.KEY_D))
+//            rotY -= .2f;
     }
 
     public Matrix4f getViewMatrix(){

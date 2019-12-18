@@ -34,45 +34,6 @@ public class Renderer {
         shader.stopUsing();
     }
 
-    /*public void render(Scene scene){
-        clear();
-        shader.use();
-        shader.useLightSource(scene.getLights().get(0));
-        shader.loadMatrix(scene.getMainCamera().getViewMatrix(), MatrixType.VIEW);
-
-        scene.traverseForRendering((TexturedModel tm) -> {
-            vertexCount = tm.getModel().getVertexCount();
-
-            *//* Bind VAO and VBOs *//*
-            GL30.glBindVertexArray(tm.getModel().getVao());
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glEnableVertexAttribArray(1);
-            GL20.glEnableVertexAttribArray(2);
-
-            *//* Load material specific variables to shader *//*
-            Material mat = tm.getMaterial();
-            shader.useMaterial(mat);
-
-            *//* Bind texture *//*
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mat.getTexture());
-        }, (Matrix4f transformationMatrix) -> {
-            *//* Load transformationMatrix to shader *//*
-            shader.loadMatrix(transformationMatrix, MatrixType.TRANSFORMATION);
-        }, () -> {
-            *//* Draw model *//*
-            GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
-        }, () -> {
-            *//* Unbind VBOs and VAO *//*
-            GL20.glDisableVertexAttribArray(2);
-            GL20.glDisableVertexAttribArray(1);
-            GL20.glDisableVertexAttribArray(0);
-            GL30.glBindVertexArray(0);
-        });
-
-        shader.stopUsing();
-    }*/
-
     public void render(Scene scene){
         clear();
         shader.use();
@@ -118,17 +79,12 @@ public class Renderer {
         shader.stopUsing();
     }
 
-    /* Adds Entity object to entities list which will be rendered */
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
     public void clean() { shader.clean(); }
 
     private void clear() {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0.15f, 0.15f, 0.5f, 1);
+        GL11.glClearColor(0.3f, 0.3f, 0.7f, 1);
     }
 
     private void glSettings() {
