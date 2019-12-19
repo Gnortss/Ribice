@@ -4,30 +4,31 @@ in vec3 position;
 in vec2 aTextureCoordinates;
 in vec3 aNormal;
 
+out vec3 fragmentPosition;
 out vec2 textureCoordinates;
 out vec3 normal;
-out vec3 lightDirection;
-out vec3 viewDirection;
+out vec3 viewPosition;
 
 uniform mat4 trans;
 uniform mat4 view;
 uniform mat4 proj;
-uniform vec3 lightPosition;
 
 void main(void) {
 
-    // Convert position and normal to eye space (eye space -> view * trans * point)
-    vec4 vertexPos = view * trans * vec4(position, 1.0);
+    // Convert position and normal to world space
+    vec4 vertexPos = trans * vec4(position, 1.0);
+    fragmentPosition = vertexPos.xyz;
 
-    gl_Position = proj * vertexPos;
+    gl_Position = proj * view * vertexPos;
     textureCoordinates = aTextureCoordinates;
 
     // 4th component of aNormal iz 0.0 so we ignore the translation part of the transformation matrix
-    normal = (view * trans * vec4(aNormal, 0.0)).xyz;
+    normal = (trans * vec4(aNormal, 0.0)).xyz;
 
-    lightDirection = (view * vec4(lightPosition, 1.0)).xyz - vertexPos.xyz;
+    //lightDirection = vec4(lightPos, 1.0).xyz - vertexPos.xyz;
+    //lightPosition = lightPos;
 
-    //viewDirection = (inverse(view) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - vertexPos.xyz;
-    viewDirection = -vertexPos.xyz;
+    // zelo slaba praksa (zelo neucinkovito) -- raj posiljej global pozicijo kamere
+    viewPosition = (inverse(view) * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 
 }

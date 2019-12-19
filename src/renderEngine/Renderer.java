@@ -1,10 +1,7 @@
 package renderEngine;
 
-import entities.Camera;
 import entities.Entity;
-import entities.Light;
 import materials.Material;
-import models.Model;
 import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -12,8 +9,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.DefaultShader;
-import utils.MatrixType;
 import utils.Maths;
+import utils.MatrixType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +35,7 @@ public class Renderer {
         clear();
         shader.use();
         /* NOTE: scene.lights can't be empty */
-        shader.useLightSource(scene.getLights().get(0));
+        shader.useLightSources(scene.getLights());
         /* Note: scene.mainCamera can't be null */
         shader.loadMatrix(scene.getMainCamera().getViewMatrix(), MatrixType.VIEW);
 

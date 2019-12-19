@@ -7,10 +7,11 @@ import models.TexturedModel;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
 public class Scene {
     private Loader loader;
@@ -23,6 +24,7 @@ public class Scene {
 
     private Matrix4f globalTransform;
     private Stack<Matrix4f> globalStack;
+
     public Scene(Loader loader){
         this.loader = loader;
 
@@ -38,7 +40,19 @@ public class Scene {
 
     public Camera getMainCamera() { return mainCamera; }
 
-    public List<Light> getLights() { return lights; }
+    /* Returns sorted lights by the distance from submarine ASCENDING */
+    /* Hope this works */
+    public List<Light> getLights() {
+        Vector3f sp = submarine.getGlobalPosition();
+        lights.sort((a, b) -> {
+            Vector3f p1 = a.getGlobalPosition();
+            Vector3f p2 = b.getGlobalPosition();
+            double d1 = Math.pow(sp.x - p1.x, 2) + Math.pow(sp.y - p1.y, 2) + Math.pow(sp.z - p1.z, 2);
+            double d2 = Math.pow(sp.x - p2.x, 2) + Math.pow(sp.y - p2.y, 2) + Math.pow(sp.z - p2.z, 2);
+            return (int) (d1 - d2);
+        });
+        return lights;
+    }
 
     public HashMap<TexturedModel, ArrayList<Entity>> getEntities() { return this.entities; }
 
@@ -49,6 +63,16 @@ public class Scene {
 
     private <T extends Node> void removeChild(T c){
         this.root.removeChild(c);
+    }
+
+    public void addLight(Vector3f pos){
+        Light light = new Light(pos)
+                .setAmbient(new Vector3f(.05f, .05f, .05f))
+                .setDiffuse(new Vector3f(.8f, .8f, .8f))
+                .setSpecular(new Vector3f(.1f, .1f, .1f))
+                .setAttenuation(new Vector3f(1f, 0.04f, 0.008f));
+        this.addChild(light);
+        this.lights.add(light);
     }
 
     public void createSubmarine(){
@@ -66,7 +90,7 @@ public class Scene {
                 .setAmbient(new Vector3f(199/255f, 239/255f, 41/255f))
                 .setDiffuse(new Vector3f(199/255f, 239/255f, 41/255f))
                 .setSpecular(new Vector3f(199/255f, 239/255f, 41/255f))
-                .setShininess(64);
+                .setShininess(2);
         Material propsMat = new Material(whiteTex)
                 .setAmbient(new Vector3f(55/255f, 55/255f, 55/255f))
                 .setDiffuse(new Vector3f(55/255f, 55/255f, 55/255f))
@@ -98,8 +122,7 @@ public class Scene {
         return fish;
     }
 
-    /* Calculates global transformation for each Entity
-    *  Adds Entity to this.entities */
+    /* Updates local and global transforms for each Node */
     public void calculateTransforms(){
         this.globalTransform = Matrix4f.setIdentity(new Matrix4f());
         this.globalStack = new Stack<>();
@@ -118,10 +141,10 @@ public class Scene {
         this.entities = new HashMap<>();
 
         this.root.traverse(
-                (Node n) -> {
-                    if(n instanceof Entity)
-                        addEntity((Entity) n);
-                }, (Node n) -> {});
+        (Node n) -> {
+            if(n instanceof Entity)
+                addEntity((Entity) n);
+        }, (Node n) -> {});
     }
 
     public void update(){

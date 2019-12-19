@@ -8,8 +8,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import utils.Maths;
 
-import javax.xml.crypto.dsig.Transform;
-
 public class Submarine extends Entity {
 
     private Entity flapsLR;
@@ -30,7 +28,10 @@ public class Submarine extends Entity {
         this.flapsUD = new Entity(flapsUD, new Vector3f(0, 0, 0), new Quaternion(), 1);
         this.propelers = new Entity(propelers, new Vector3f(0, 0, 0), new Quaternion(), 1);
         /* Actual light position: 0, 1.5502f, -3.2302f */
-        this.light = new Light(new Vector3f(0f, 5.5f, 12f), new Vector3f(1, 1, 1));
+        this.light = new Light(new Vector3f(0, 1.5502f, -3.2302f))
+                .setAmbient(new Vector3f(.05f, .05f, .05f))
+                .setDiffuse(new Vector3f(.8f, .8f, .8f))
+                .setSpecular(new Vector3f(.1f, .1f, .1f));
         this.camera = new Camera(new Vector3f(0, 5.5f, 15f), new Quaternion());
 
         this.addChild(this.flapsLR);
@@ -42,6 +43,13 @@ public class Submarine extends Entity {
         this.speed = 0;
     }
     /* Getters */
+    public Vector3f getGlobalPosition() {
+        Matrix4f parentTransform = this.getParent().getGlobalTransform();
+        Vector4f global = new Vector4f(position.x, position.y, position.z, 1.0f);
+        Matrix4f.transform(parentTransform, global, global);
+        return new Vector3f(global.x, global.y, global.z);
+    }
+
     public Camera getCamera() { return this.camera; }
 
     public Light getLight() { return this.light; }
