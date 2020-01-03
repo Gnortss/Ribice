@@ -10,7 +10,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
-import utils.Maths;
 
 public class MainLoop {
 
@@ -27,13 +26,7 @@ public class MainLoop {
 
         Scene scene = new Scene(loader);
         scene.createSubmarine();
-
-//        for(int i = 0; i < 10; i++){
-//            for(int j = 0; j < 10; j++){
-//                scene.createFish(staticModel1, new Vector3f(i * 5, j * 5, 0), new Quaternion());
-//            }
-//        }
-
+      
         Quaternion rot = Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -180f);
         scene.createFishGroup(staticModel1, new Vector3f(0, 50, -180), rot, 30, 100);
         scene.createFishGroup(staticModel1, new Vector3f(100, 50, -180), rot, 30, 100);

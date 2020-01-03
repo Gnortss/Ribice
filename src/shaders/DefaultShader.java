@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+import java.util.List;
 
 public class DefaultShader {
     private static final String VERTEX_SOURCE = "src/shaders/vertexShader.txt";
@@ -54,6 +55,15 @@ public class DefaultShader {
         uniform_location.put("material.diffuse", getLocation("material.diffuse"));
         uniform_location.put("material.specular", getLocation("material.specular"));
         uniform_location.put("material.shininess", getLocation("material.shininess"));
+
+        /* Get uniform locations for point lights */
+        for(int i = 0; i < 10; i++){
+            uniform_location.put("pointLight[" + i + "].position", getLocation("pointLight[" + i + "].position"));
+            uniform_location.put("pointLight[" + i + "].attenuation", getLocation("pointLight[" + i + "].attenuation"));
+            uniform_location.put("pointLight[" + i + "].ambient", getLocation("pointLight[" + i + "].ambient"));
+            uniform_location.put("pointLight[" + i + "].diffuse", getLocation("pointLight[" + i + "].diffuse"));
+            uniform_location.put("pointLight[" + i + "].specular", getLocation("pointLight[" + i + "].specular"));
+        }
     }
 
     public void use(){ GL20.glUseProgram(program); }
@@ -69,12 +79,34 @@ public class DefaultShader {
         GL20.glDeleteProgram(program);
     }
 
-    /* Loads light variables to shader */
-    public void useLightSource(Light light) {
-        Vector3f pos = light.getGlobalPosition();
-        Vector3f color = light.getColor();
-        GL20.glUniform3f(uniform_location.get("lightPosition"), pos.x, pos.y, pos.z);
-        GL20.glUniform3f(uniform_location.get("lightColor"), color.x, color.y, color.z);
+    /* Loads point lights to shader */
+    public void useLightSources(List<Light> lights) {
+        /* lights are already sorted based on distance from camera ascending */
+        int pointLightsCount = 0;
+        for (Light light : lights) {
+            if(pointLightsCount >= 10) break;
+
+            /* Load point light variables to shader */
+            Vector3f pos = light.getGlobalPosition();
+            Vector3f att = light.getAttenuation();
+            Vector3f amb = light.getAmbient();
+            Vector3f dif = light.getDiffuse();
+            Vector3f spec = light.getSpecular();
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].position"), pos.x, pos.y, pos.z);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].attenuation"), att.x, att.y, att.z);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].ambient"), amb.x, amb.y, amb.z);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].diffuse"), dif.x, dif.y, dif.z);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].specular"), spec.x, spec.y, spec.z);
+            pointLightsCount++;
+        }
+        /* Load empty point lights -> it has to have some value */
+        for(; pointLightsCount < 10; pointLightsCount++){
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].position"), 0, 0, 0);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].attenuation"), 1, 0, 0);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].ambient"), 0, 0, 0);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].diffuse"), 0, 0, 0);
+            GL20.glUniform3f(uniform_location.get("pointLight[" + pointLightsCount + "].specular"), 0, 0, 0);
+        }
     }
 
     public void useMaterial(Material mat) {
