@@ -30,7 +30,7 @@ public class Submarine extends Entity {
         this.flapsUD = new Entity(flapsUD, new Vector3f(0, 0, 0), new Quaternion(), 1);
         this.propelers = new Entity(propelers, new Vector3f(0, 0, 0), new Quaternion(), 1);
         /* Actual light position: 0, 1.5502f, -3.2302f */
-        this.light = new Light(new Vector3f(0f, 5.5f, 12f), new Vector3f(1, 1, 1));
+        this.light = new Light(new Vector3f(0f, 1.5502f, -3.2302f), new Vector3f(1, 1, 1));
         this.camera = new Camera(new Vector3f(0, 5.5f, 15f), new Quaternion());
 
         this.addChild(this.flapsLR);
