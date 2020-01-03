@@ -1,6 +1,7 @@
 package engineTester;
 
 import entities.Entity;
+import entities.Fish;
 import entities.Node;
 import materials.Material;
 import models.Model;
@@ -25,19 +26,17 @@ public class MainLoop {
 
         Scene scene = new Scene(loader);
         scene.createSubmarine();
-        Entity fish = scene.createFish(staticModel1, new Vector3f(0, 0, -15), new Quaternion());
-        Node fishGroup = new Node().setPosition(new Vector3f(0, 0, -5));
-        fish.addChild(fishGroup);
-
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                fishGroup.addChild(new Entity(staticModel1, new Vector3f(i * 5, j * 5, 0), new Quaternion(), 1));
-                scene.addLight(new Vector3f(i * 5, j * 5, -4));
-            }
-        }
+      
+        Quaternion rot = Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -180f);
+        scene.createFishGroup(staticModel1, new Vector3f(0, 50, -180), rot, 30, 100);
+        scene.createFishGroup(staticModel1, new Vector3f(100, 50, -180), rot, 30, 100);
+        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, -180), rot, 30, 100);
+        scene.createFishGroup(staticModel1, new Vector3f(0, 50, 180), new Quaternion(), 30, 100);
+        scene.createFishGroup(staticModel1, new Vector3f(100, 50, 180), new Quaternion(), 30, 100);
+        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, 180), new Quaternion(), 30, 100);
 
         Renderer renderer = new Renderer();
-        scene.update();
+        scene.update(0f);
         long last_time = System.nanoTime();
         while(!Display.isCloseRequested()) {
             long time = System.nanoTime();
@@ -49,7 +48,7 @@ public class MainLoop {
 
             scene.getSubmarine().move(deltaTime);
 
-            scene.update();
+            scene.update(deltaTime);
             renderer.render(scene);
 
             WindowManager.update();

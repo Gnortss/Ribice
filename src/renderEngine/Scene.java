@@ -7,6 +7,8 @@ import models.TexturedModel;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.opengl.Texture;
+import utils.Maths;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ public class Scene {
         this.entities = new HashMap<>();
         this.globalTransform = Matrix4f.setIdentity(new Matrix4f());
         this.globalStack = new Stack<>();
+
+        this.buildEnvironment();
     }
 
     /* Getters */
@@ -105,6 +109,9 @@ public class Scene {
 
         /* Create Submarine */
         Submarine submarine = new Submarine(bodyModel, flapsLRModel, flapsUDModel, propelersModel);
+        submarine.setPosition(new Vector3f(200, 30, 0));
+        submarine.setRotation(Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -90f));
+
 
         this.submarine = submarine;
         this.mainCamera = submarine.getCamera();
@@ -113,10 +120,30 @@ public class Scene {
         this.addChild(submarine);
     }
 
+    public void createFishGroup(TexturedModel model, Vector3f pos, Quaternion rot, float maxOffset, int n){
+        for(int i = 0; i < n; i++){
+            Vector3f p = new Vector3f(
+                    pos.x + (float)Math.random() * maxOffset * 2 - maxOffset,
+                    pos.y + (float)Math.random() * maxOffset * 2 - maxOffset,
+                    pos.z + (float)Math.random() * maxOffset * 2 - maxOffset
+            );
+            Quaternion r = new Quaternion();
+            Vector3f right = Maths.getAxis(new Quaternion(), "right");
+            Vector3f up = Maths.getAxis(new Quaternion(), "up");
+            Quaternion rx = Maths.createFromAxisAngle(right, (float)Math.random() * 60 - 30);
+            Quaternion ry = Maths.createFromAxisAngle(up, (float)Math.random() * 60 - 30);
+            Quaternion.mul(rot, r, r);
+            Quaternion.mul(rx, ry, ry);
+            Quaternion.mul(ry, r, r);
+
+            this.addChild(new Fish(model, p, r, 1f));
+        }
+    }
+
     /* Creates fish */
     /* NOTE: TEMPORARY BEFORE WE CREATE Fish which extends Entity class!!!!! */
-    public Entity createFish(TexturedModel model, Vector3f p, Quaternion r){
-        Entity fish = new Entity(model, p, r, 1f);
+    public Fish createFish(TexturedModel model, Vector3f p, Quaternion r){
+        Fish fish = new Fish(model, p, r, 1f);
         this.addChild(fish);
 
         return fish;
@@ -147,8 +174,88 @@ public class Scene {
         }, (Node n) -> {});
     }
 
-    public void update(){
+    public void update(float dt){
         this.calculateTransforms();
+
+        /* move fish entities */
+        this.root.traverse(
+                (Node n) -> {
+                    if(n instanceof Fish)
+                        ((Fish) n).move(dt);
+                }, (Node n) -> {});
+
+    }
+
+    private void buildEnvironment() {
+        Model ground = OBJLoader.loadObjModel("/map/ground", loader);
+        Model c1 = OBJLoader.loadObjModel("/map/c1", loader);
+        Model c2 = OBJLoader.loadObjModel("/map/c2", loader);
+        Model c3 = OBJLoader.loadObjModel("/map/c3", loader);
+        Model c4 = OBJLoader.loadObjModel("/map/c4", loader);
+        Model c5 = OBJLoader.loadObjModel("/map/c5", loader);
+        Model c6 = OBJLoader.loadObjModel("/map/c6", loader);
+        Model c7 = OBJLoader.loadObjModel("/map/c7", loader);
+        Model c8 = OBJLoader.loadObjModel("/map/c8", loader);
+        Model c9 = OBJLoader.loadObjModel("/map/c9", loader);
+
+        int wt = loader.loadTexture("white");
+
+        Material gMat = new Material(wt)
+                .setAmbient(new Vector3f(227/255f, 214/255f, 132/255f))
+                .setDiffuse(new Vector3f(227/255f, 214/255f, 132/255f))
+                .setSpecular(new Vector3f(227/255f, 214/255f, 132/255f))
+                .setShininess(512);
+
+        Material blue = new Material(wt)
+                .setAmbient(new Vector3f(52/255f, 103/255f, 235/255f))
+                .setDiffuse(new Vector3f(52/255f, 103/255f, 235/255f))
+                .setSpecular(new Vector3f(52/255f, 103/255f, 235/255f))
+                .setShininess(512);
+
+        Material green = new Material(wt)
+                .setAmbient(new Vector3f(155/255f, 209/255f, 40/255f))
+                .setDiffuse(new Vector3f(155/255f, 209/255f, 40/255f))
+                .setSpecular(new Vector3f(155/255f, 209/255f, 40/255f))
+                .setShininess(512);
+
+        Material red = new Material(wt)
+                .setAmbient(new Vector3f(209/255f, 78/255f, 73/255f))
+                .setDiffuse(new Vector3f(209/255f, 78/255f, 73/255f))
+                .setSpecular(new Vector3f(209/255f, 78/255f, 73/255f))
+                .setShininess(512);
+
+        TexturedModel gm = new TexturedModel(ground, gMat);
+        TexturedModel cm1 = new TexturedModel(c1, blue);
+        TexturedModel cm2 = new TexturedModel(c2, blue);
+        TexturedModel cm3 = new TexturedModel(c3, blue);
+        TexturedModel cm4 = new TexturedModel(c4, green);
+        TexturedModel cm5 = new TexturedModel(c5, green);
+        TexturedModel cm6 = new TexturedModel(c6, green);
+        TexturedModel cm7 = new TexturedModel(c7, red);
+        TexturedModel cm8 = new TexturedModel(c8, red);
+        TexturedModel cm9 = new TexturedModel(c9, red);
+
+        Entity ge = new Entity(gm, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce1 = new Entity(cm1, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce2 = new Entity(cm2, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce3 = new Entity(cm3, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce4 = new Entity(cm4, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce5 = new Entity(cm5, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce6 = new Entity(cm6, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce7 = new Entity(cm7, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce8 = new Entity(cm8, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+        Entity ce9 = new Entity(cm9, new Vector3f(0, 0, 0), new Quaternion(), 4f);
+
+        this.addChild(ge);
+        this.addChild(ce1);
+        this.addChild(ce2);
+        this.addChild(ce3);
+        this.addChild(ce4);
+        this.addChild(ce5);
+        this.addChild(ce6);
+        this.addChild(ce7);
+        this.addChild(ce8);
+        this.addChild(ce9);
     }
 
     private void addEntity(Entity e){
