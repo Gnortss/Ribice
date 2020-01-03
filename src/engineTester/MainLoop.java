@@ -1,8 +1,5 @@
 package engineTester;
 
-import entities.Entity;
-import entities.Fish;
-import entities.Node;
 import materials.Material;
 import models.Model;
 import models.TexturedModel;
@@ -10,6 +7,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
+import utils.Maths;
 
 public class MainLoop {
 
