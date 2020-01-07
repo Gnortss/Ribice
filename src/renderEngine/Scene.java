@@ -21,21 +21,31 @@ public class Scene {
     private Submarine submarine;
     private Camera mainCamera;
     private List<Light> lights;
+    private List<Coin> coins;
     private HashMap<TexturedModel, ArrayList<Entity>> entities;
 
     private Matrix4f globalTransform;
     private Stack<Matrix4f> globalStack;
+
+    private TexturedModel fishModel;
+    private float lastSpawn;
 
     public Scene(Loader loader){
         this.loader = loader;
 
         this.root = new Node();
         this.lights = new ArrayList<>();
+        this.coins = new ArrayList<>();
         this.entities = new HashMap<>();
         this.globalTransform = Matrix4f.setIdentity(new Matrix4f());
         this.globalStack = new Stack<>();
 
         this.buildEnvironment();
+
+        Model model = OBJLoader.loadObjModel("fish", loader);
+        this.fishModel = new TexturedModel(model, new Material(loader.loadTexture("fish_colormap")));
+
+        this.lastSpawn = 0; // in miliseconds
     }
 
     /* Getters */
@@ -68,12 +78,12 @@ public class Scene {
         this.root.removeChild(c);
     }
 
-    public void addLight(Vector3f pos){
+    public void addLight(Vector3f pos, Vector3f col, Vector3f att){
         Light light = new Light(pos)
-                .setAmbient(new Vector3f(.05f, .05f, .05f))
-                .setDiffuse(new Vector3f(.8f, .8f, .8f))
-                .setSpecular(new Vector3f(.1f, .1f, .1f))
-                .setAttenuation(new Vector3f(1f, 0.04f, 0.008f));
+                .setAmbient(col)
+                .setDiffuse(col)
+                .setSpecular(col)
+                .setAttenuation(att);
         this.addChild(light);
         this.lights.add(light);
     }
@@ -108,7 +118,8 @@ public class Scene {
 
         /* Create Submarine */
         Submarine submarine = new Submarine(bodyModel, flapsLRModel, flapsUDModel, propelersModel);
-        submarine.setPosition(new Vector3f(200, 30, 0));
+        submarine.setPosition(new Vector3f(450, 20, 0));
+//        submarine.setPosition(new Vector3f(0, 10, 0));
         submarine.setRotation(Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -90f));
 
 
@@ -165,87 +176,115 @@ public class Scene {
     }
 
     public void update(float dt){
+        /* Kill dead fish and update coins*/
+        List<Fish> blacklist = new ArrayList<>();
+        List<Coin> toRemove = new ArrayList<>();
+        this.root.traverse(
+                (Node n) -> {
+                    if(n instanceof Fish)
+                        if(((Fish) n).isDead()) blacklist.add((Fish) n);
+                    if(n instanceof Coin) {
+                        ((Coin) n).updateRotation(dt);
+                        if(Maths.isColliding(submarine, ((Coin) n))) toRemove.add((Coin) n);
+                    }
+                }, (Node n) -> {});
+        for (Fish fish : blacklist) {
+            fish.kill();
+        }
+        for(Coin coin : toRemove) coin.remove();
+
+        if(this.submarine != null) this.submarine.move(dt);
+
         this.calculateTransforms();
 
-        /* move fish entities */
+        /* move fish entities and update coin rotation*/
         this.root.traverse(
                 (Node n) -> {
                     if(n instanceof Fish)
                         ((Fish) n).move(dt);
                 }, (Node n) -> {});
 
+
+        // TODO: spawn fish in front of the submarine
+        float time = System.nanoTime()/1000000f;
+        if(time - lastSpawn > 5000) {
+            spawnNewFish();
+            lastSpawn = time;
+        }
     }
 
-    private void buildEnvironment() {
-        Model ground = OBJLoader.loadObjModel("/map/ground", loader);
-        Model c1 = OBJLoader.loadObjModel("/map/c1", loader);
-        Model c2 = OBJLoader.loadObjModel("/map/c2", loader);
-        Model c3 = OBJLoader.loadObjModel("/map/c3", loader);
-        Model c4 = OBJLoader.loadObjModel("/map/c4", loader);
-        Model c5 = OBJLoader.loadObjModel("/map/c5", loader);
-        Model c6 = OBJLoader.loadObjModel("/map/c6", loader);
-        Model c7 = OBJLoader.loadObjModel("/map/c7", loader);
-        Model c8 = OBJLoader.loadObjModel("/map/c8", loader);
-        Model c9 = OBJLoader.loadObjModel("/map/c9", loader);
-
+    private void buildEnvironment(){
         int wt = loader.loadTexture("white");
+        Material gMat = new Material(wt, new Vector3f(227/255f, 214/255f, 132/255f), 512);
+        Material blue = new Material(wt, new Vector3f(52/255f, 103/255f, 235/255f), 512);
+        Material black = new Material(wt, new Vector3f(0, 0, 0), 512);
+        Material yellow = new Material(wt, new Vector3f(245/255f, 215/255f, 69/255f), 512);
+        Material green = new Material(wt, new Vector3f(155/255f, 209/255f, 40/255f), 512);
+        Material bright_green = new Material(wt, new Vector3f(124/255f, 255/255f, 112/255f), 512);
+        Material red = new Material(wt, new Vector3f(209/255f, 78/255f, 73/255f), 512);
+        Material magenta = new Material(wt, new Vector3f(222/255f, 64/255f, 177/255f), 512);
 
-        Material gMat = new Material(wt)
-                .setAmbient(new Vector3f(227/255f, 214/255f, 132/255f))
-                .setDiffuse(new Vector3f(227/255f, 214/255f, 132/255f))
-                .setSpecular(new Vector3f(227/255f, 214/255f, 132/255f))
-                .setShininess(512);
-
-        Material blue = new Material(wt)
-                .setAmbient(new Vector3f(52/255f, 103/255f, 235/255f))
-                .setDiffuse(new Vector3f(52/255f, 103/255f, 235/255f))
-                .setSpecular(new Vector3f(52/255f, 103/255f, 235/255f))
-                .setShininess(512);
-
-        Material green = new Material(wt)
-                .setAmbient(new Vector3f(155/255f, 209/255f, 40/255f))
-                .setDiffuse(new Vector3f(155/255f, 209/255f, 40/255f))
-                .setSpecular(new Vector3f(155/255f, 209/255f, 40/255f))
-                .setShininess(512);
-
-        Material red = new Material(wt)
-                .setAmbient(new Vector3f(209/255f, 78/255f, 73/255f))
-                .setDiffuse(new Vector3f(209/255f, 78/255f, 73/255f))
-                .setSpecular(new Vector3f(209/255f, 78/255f, 73/255f))
-                .setShininess(512);
-
+        Model ground = OBJLoader.loadObjModel("/map1/ground", loader);
         TexturedModel gm = new TexturedModel(ground, gMat);
-        TexturedModel cm1 = new TexturedModel(c1, blue);
-        TexturedModel cm2 = new TexturedModel(c2, blue);
-        TexturedModel cm3 = new TexturedModel(c3, blue);
-        TexturedModel cm4 = new TexturedModel(c4, green);
-        TexturedModel cm5 = new TexturedModel(c5, green);
-        TexturedModel cm6 = new TexturedModel(c6, green);
-        TexturedModel cm7 = new TexturedModel(c7, red);
-        TexturedModel cm8 = new TexturedModel(c8, red);
-        TexturedModel cm9 = new TexturedModel(c9, red);
-
-        Entity ge = new Entity(gm, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce1 = new Entity(cm1, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce2 = new Entity(cm2, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce3 = new Entity(cm3, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce4 = new Entity(cm4, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce5 = new Entity(cm5, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce6 = new Entity(cm6, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce7 = new Entity(cm7, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce8 = new Entity(cm8, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-        Entity ce9 = new Entity(cm9, new Vector3f(0, 0, 0), new Quaternion(), 4f);
-
+        Entity ge = new Entity(gm, new Vector3f(0, 0, 0), new Quaternion(), 1f);
         this.addChild(ge);
-        this.addChild(ce1);
-        this.addChild(ce2);
-        this.addChild(ce3);
-        this.addChild(ce4);
-        this.addChild(ce5);
-        this.addChild(ce6);
-        this.addChild(ce7);
-        this.addChild(ce8);
-        this.addChild(ce9);
+
+        Model m;
+        TexturedModel tm;
+
+        for(int i = 1; i <= 8; i++){
+            m = OBJLoader.loadObjModel("/map1/pillar0" + i, loader);
+            tm = new TexturedModel(m, green);
+            this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+        }
+
+        for(int i = 1; i <= 6; i++){
+            m = OBJLoader.loadObjModel("/map1/brick0" + i, loader);
+            tm = new TexturedModel(m, i%2==0 ? red : blue);
+            this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+        }
+
+        for(int i = 1; i <= 3; i++){
+            m = OBJLoader.loadObjModel("/map1/cube0" + i, loader);
+            tm = new TexturedModel(m, i%2==0 ? blue : i%3==0 ? green : red);
+            this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+        }
+
+        for(int i = 1; i <= 5; i++){
+            m = OBJLoader.loadObjModel("/map1/pillar1" + i, loader);
+            tm = new TexturedModel(m, i%2==0 ? red : black);
+            this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+        }
+
+        for(int i = 1; i <= 3; i++){
+            m = OBJLoader.loadObjModel("/map1/torus0" + i, loader);
+            tm = new TexturedModel(m, i%2==0 ? magenta : yellow);
+            this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+        }
+
+        m = OBJLoader.loadObjModel("/map1/pillar21", loader);
+        tm = new TexturedModel(m, yellow);
+        this.addChild(new Entity(tm, new Vector3f(0, 0, 0), new Quaternion(), 1f));
+
+        addLight(new Vector3f(35, 0, -30), new Vector3f(124/255f, 63/255f, 143/255f), new Vector3f(2f, 0.01f, 0.003f));
+        addLight(new Vector3f(48, 59, -21), new Vector3f(124/255f, 63/255f, 143/255f), new Vector3f(2f, 0.01f, 0.003f));
+        addLight(new Vector3f(16, 0, 62), new Vector3f(124/255f, 255/255f, 112/255f), new Vector3f(2f, 0.01f, 0.003f));
+        addLight(new Vector3f(-171, 49, 135), new Vector3f(124/255f, 255/255f, 112/255f), new Vector3f(2f, 0.01f, 0.003f));
+
+        Model coinModel = OBJLoader.loadObjModel("coin", loader);
+        TexturedModel coinTexturedModel = new TexturedModel(coinModel, yellow);
+        addCoin(new Coin(coinTexturedModel, new Vector3f(342, 26, 0), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(254, 51, -21), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(143, 76, -40), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(60, 38, -17), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(21, 18, 62), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(-57, 11, -25), new Quaternion(), 2f));
+        addCoin(new Coin(coinTexturedModel, new Vector3f(-173, 21, 117), new Quaternion(), 2f));
+    }
+
+    private void addCoin(Coin e){
+        this.coins.add(e);
+        this.addChild(e);
     }
 
     private void addEntity(Entity e){
@@ -257,5 +296,36 @@ public class Scene {
             l.add(e);
             this.entities.put(m, l);
         }
+    }
+
+    private void spawnNewFish(){
+        Vector3f submarineForward = Maths.getAxis(submarine.getRotation(), "forward");
+        Vector3f submarineRight = Maths.getAxis(submarine.getRotation(), "right");
+        Vector3f submarineUp = Maths.getAxis(submarine.getRotation(), "up");
+
+        Vector3f tmp = (Vector3f) new Vector3f(submarineForward).scale(80);
+        Vector3f tmp2 = (Vector3f) new Vector3f(submarineForward).scale(160);
+        Vector3f pos1 = Vector3f.add(tmp, (Vector3f) new Vector3f(submarineRight).scale(90f), null);
+        Vector3f pos2 = Vector3f.add(tmp, (Vector3f) new Vector3f(submarineRight).scale(-90f), null);
+        Vector3f pos3 = Vector3f.add(tmp2, (Vector3f) new Vector3f(submarineRight).scale(100), null);
+        Vector3f pos4 = Vector3f.add(tmp2, (Vector3f) new Vector3f(submarineRight).scale(-100), null);
+
+        Vector3f submarineGlobalPosition = submarine.getGlobalPosition();
+        pos1 = Vector3f.add(submarineGlobalPosition, pos1, null);
+        pos2 = Vector3f.add(submarineGlobalPosition, pos2, null);
+        pos3 = Vector3f.add(submarineGlobalPosition, pos3, null);
+        pos4 = Vector3f.add(submarineGlobalPosition, pos4, null);
+
+        Quaternion rot1 = Maths.createFromAxisAngle(submarineUp, -45f);
+        Quaternion rot2 = Maths.createFromAxisAngle(submarineUp, 45f);
+        Quaternion submarineRotation = submarine.getRotation();
+        Quaternion.mul(rot1, submarineRotation, rot1);
+        Quaternion.mul(rot2, submarineRotation, rot2);
+
+
+        createFishGroup(fishModel, pos1, rot1, 20f, 20);
+        createFishGroup(fishModel, pos2, rot2, 20f, 20);
+        createFishGroup(fishModel, pos3, rot1, 30f, 20);
+        createFishGroup(fishModel, pos4, rot2, 30f, 20);
     }
 }

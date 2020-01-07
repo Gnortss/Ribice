@@ -14,7 +14,7 @@ uniform mat4 trans;
 uniform mat4 view;
 uniform mat4 proj;
 
-const float density = 0.0035;
+const float density = 0.007;
 const float gradient = 3.0;
 
 void main(void) {

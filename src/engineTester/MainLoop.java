@@ -4,10 +4,7 @@ import materials.Material;
 import models.Model;
 import models.TexturedModel;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
-import utils.Maths;
 
 public class MainLoop {
 
@@ -24,14 +21,14 @@ public class MainLoop {
 
         Scene scene = new Scene(loader);
         scene.createSubmarine();
-      
-        Quaternion rot = Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -180f);
-        scene.createFishGroup(staticModel1, new Vector3f(0, 50, -180), rot, 30, 100);
-        scene.createFishGroup(staticModel1, new Vector3f(100, 50, -180), rot, 30, 100);
-        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, -180), rot, 30, 100);
-        scene.createFishGroup(staticModel1, new Vector3f(0, 50, 180), new Quaternion(), 30, 100);
-        scene.createFishGroup(staticModel1, new Vector3f(100, 50, 180), new Quaternion(), 30, 100);
-        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, 180), new Quaternion(), 30, 100);
+//
+//        Quaternion rot = Maths.createFromAxisAngle(Maths.getAxis(new Quaternion(), "up"), -180f);
+//        scene.createFishGroup(staticModel1, new Vector3f(0, 50, -180), rot, 30, 100);
+//        scene.createFishGroup(staticModel1, new Vector3f(100, 50, -180), rot, 30, 100);
+//        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, -180), rot, 30, 100);
+//        scene.createFishGroup(staticModel1, new Vector3f(0, 50, 180), new Quaternion(), 30, 100);
+//        scene.createFishGroup(staticModel1, new Vector3f(100, 50, 180), new Quaternion(), 30, 100);
+//        scene.createFishGroup(staticModel1, new Vector3f(-100, 50, 180), new Quaternion(), 30, 100);
 
         Renderer renderer = new Renderer();
         scene.update(0f);
@@ -42,9 +39,6 @@ public class MainLoop {
             /* IN SECONDS */
             float deltaTime = (time - last_time)/1000000000f;
             last_time = time;
-
-
-            scene.getSubmarine().move(deltaTime);
 
             scene.update(deltaTime);
             renderer.render(scene);

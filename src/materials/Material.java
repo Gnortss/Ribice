@@ -14,6 +14,14 @@ public class Material {
         this.texture = texture;
     }
 
+    public Material(int texture, Vector3f ads, float s) {
+        this.texture = texture;
+        this.ambient = ads;
+        this.diffuse = ads;
+        this.specular = ads;
+        this.shininess = s;
+    }
+
     public int getTexture() {
         return texture;
     }

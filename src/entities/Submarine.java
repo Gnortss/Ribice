@@ -21,6 +21,9 @@ public class Submarine extends Entity {
     private final float ACCELERATION = .1f;
     private float speed, rotSpeedF, rotSpeedU, rotSpeedR;
 
+    private float colSphereRadius = 1.135f;
+    private Vector3f colSphereOffset = new Vector3f(-2.2857f, 0, 0);
+
     public Submarine(TexturedModel body, TexturedModel flapsLR, TexturedModel flapsUD, TexturedModel propelers) {
         super(body, new Vector3f(0, 0, 0), new Quaternion(), 1);
 
@@ -55,6 +58,14 @@ public class Submarine extends Entity {
         return new Vector3f(global.x, global.y, global.z);
     }
 
+    public float getColSphereRadius() {
+        return colSphereRadius;
+    }
+
+    public Vector3f getColSphereOffset() {
+        return colSphereOffset;
+    }
+
     public Camera getCamera() {
         return this.camera;
     }
@@ -79,7 +90,7 @@ public class Submarine extends Entity {
         if (speed != 0) dirty = true;
 
         updateRotation(dt);
-
+        updateFlaps();
         updatePropelers(dt);
     }
 
@@ -114,6 +125,11 @@ public class Submarine extends Entity {
             rotSpeedF -= rotAcc;
             rotSpeedF = Math.max(rotSpeedF, -MAX_ROTATION_SPEED);
         }
+        if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
+            rotSpeedR = 0;
+            rotSpeedF = 0;
+            rotSpeedU = 0;
+        }
 
         r = Maths.createFromAxisAngle(right, rotSpeedR * dt);
         Quaternion.mul(r, rotation, rotation);
@@ -132,5 +148,15 @@ public class Submarine extends Entity {
         Quaternion rx = Maths.createFromAxisAngle(forward, rotationSpeed * dt);
         Quaternion.mul(rx, r, r);
         propelers.setRotation(r);
+    }
+
+    private void updateFlaps() {
+        Vector3f right = Maths.getAxis(new Quaternion(), "right");
+        Quaternion rotUD = Maths.createFromAxisAngle(right, -rotSpeedR * .15f);
+        flapsUD.setRotation(rotUD);
+
+        Vector3f up = Maths.getAxis(new Quaternion(), "up");
+        Quaternion rotLR = Maths.createFromAxisAngle(up, -rotSpeedU * .15f);
+        flapsLR.setRotation(rotLR);
     }
 }

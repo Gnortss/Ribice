@@ -1,14 +1,23 @@
 package utils;
 
 import entities.Camera;
+import entities.Coin;
+import entities.Submarine;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.*;
-import renderEngine.Loader;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class Maths {
+
+    public static boolean isColliding(Submarine s, Coin c) {
+        Vector3f p1 = s.getGlobalPosition();
+        Vector3f p2 = c.getGlobalPosition();
+
+        float d = (float) Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+        return d < s.getColSphereRadius() + c.getColSphereRadius();
+    }
 
     public static Matrix4f createRotationMatrix(Quaternion r){
         Vector3f forward =  new Vector3f(2.0f * (r.getX() * r.getZ() - r.getW() * r.getY()), 2.0f * (r.getY() * r.getZ() + r.getW() * r.getX()), 1.0f - 2.0f * (r.getX() * r.getX() + r.getY() * r.getY()));
@@ -102,36 +111,4 @@ public class Maths {
 
         return projectionMatrix;
     }
-
-
-
-//    public static Model pointOnSphere(Loader loader, int n, double viewAngle) {
-//        double goldenRatio = (1 + Math.sqrt(5)) / 2;
-//        double angleIncrement = Math.PI * 2 * goldenRatio;
-//
-//        List<Double> indices = new ArrayList<>();
-//        for(int i = 0; i < n; i++) {
-//            double t = (double) i / n;
-//            float inclination = (float) Math.acos(1 - 2 * t);
-//            if (inclination <= viewAngle) {
-//                indices.add(t);
-//            }
-//        }
-//
-//        float[] positions = new float[indices.size()*6];
-//        for(int i = 0; i < indices.size(); i++) {
-//            double t = indices.get(i);
-//            float inclination = (float) Math.acos(1 - 2 * t);
-//            float azimuth = (float) (angleIncrement * i);
-//
-//            positions[6*i] = -30f;
-//            positions[6*i+1] = 2f;
-//            positions[6*i+2] = 0f;
-//            positions[6*i+3] = (float) (Math.cos(inclination)) * -50 -30; // X
-//            positions[6*i+4] = (float) (Math.sin(inclination) * Math.sin(azimuth)) * 50 + 2; // Y
-//            positions[6*i+5] = (float) (Math.sin(inclination) * Math.cos(azimuth)) * 50; // Z
-//        }
-//
-//        return loader.loadLinesToVAO(positions);
-//    }
 }

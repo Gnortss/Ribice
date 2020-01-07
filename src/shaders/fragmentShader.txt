@@ -46,7 +46,8 @@ void main(void) {
     vec3 norm = normalize(normal);
     vec3 viewDir = normalize(viewPosition - fragmentPosition);
 
-    vec3 result = calculateDirectionalLight(dirLight, norm, viewDir);
+    vec3 result = vec3(0.0);
+    result = calculateDirectionalLight(dirLight, norm, viewDir);
 
     for(int i = 0; i < 10; i++) {
         result += calculatePointLight(pointLight[i], norm, fragmentPosition, viewDir);
