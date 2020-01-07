@@ -18,17 +18,17 @@ public class Fish extends Entity {
         /* rotation part */
         Vector3f right = Maths.getAxis(new Quaternion(), "right");
         Vector3f up = Maths.getAxis(new Quaternion(), "up");
-        Vector3f forward = Maths.getAxis(new Quaternion(), "forward");
+//        Vector3f forward = Maths.getAxis(new Quaternion(), "forward");
         float angVel = 90;
         float dx = (float) (Math.random() * angVel * 2 - angVel);
         float dy = (float) (Math.random() * angVel * 2 - angVel);
         float dz = (float) (Math.random() * angVel * 2 - angVel);
         Quaternion rx = Maths.createFromAxisAngle(right, dx * dt);
         Quaternion ry = Maths.createFromAxisAngle(up, dy * dt);
-        Quaternion rz = Maths.createFromAxisAngle(forward, dz * dt);
+//        Quaternion rz = Maths.createFromAxisAngle(forward, dz * dt);
         Quaternion.mul(rx, rotation, rotation);
         Quaternion.mul(ry, rotation, rotation);
-        Quaternion.mul(rz, rotation, rotation);
+//        Quaternion.mul(rz, rotation, rotation);
 
         /* translation part */
         Vector3f velocity = Maths.getAxis(rotation, "forward");

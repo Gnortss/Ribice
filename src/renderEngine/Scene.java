@@ -7,7 +7,6 @@ import models.TexturedModel;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
 import utils.Maths;
 
 import java.util.ArrayList;
@@ -136,17 +135,8 @@ public class Scene {
             Quaternion.mul(rx, ry, ry);
             Quaternion.mul(ry, r, r);
 
-            this.addChild(new Fish(model, p, r, 1f));
+            this.addChild(new Fish(model, p, r, 2f));
         }
-    }
-
-    /* Creates fish */
-    /* NOTE: TEMPORARY BEFORE WE CREATE Fish which extends Entity class!!!!! */
-    public Fish createFish(TexturedModel model, Vector3f p, Quaternion r){
-        Fish fish = new Fish(model, p, r, 1f);
-        this.addChild(fish);
-
-        return fish;
     }
 
     /* Updates local and global transforms for each Node */

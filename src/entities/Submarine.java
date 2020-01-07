@@ -16,9 +16,10 @@ public class Submarine extends Entity {
     private Light light;
     private Camera camera;
 
-    private final float MAX_SPEED = 1f;
+    private final float MAX_SPEED = .6f;
+    private final float MAX_ROTATION_SPEED = 70f;
     private final float ACCELERATION = .1f;
-    private float speed;
+    private float speed, rotSpeedF, rotSpeedU, rotSpeedR;
 
     public Submarine(TexturedModel body, TexturedModel flapsLR, TexturedModel flapsUD, TexturedModel propelers) {
         super(body, new Vector3f(0, 0, 0), new Quaternion(), 1);
@@ -32,7 +33,7 @@ public class Submarine extends Entity {
                 .setAmbient(new Vector3f(.05f, .05f, .05f))
                 .setDiffuse(new Vector3f(.8f, .8f, .8f))
                 .setSpecular(new Vector3f(.1f, .1f, .1f));
-        this.camera = new Camera(new Vector3f(0, 5.5f, 15f), new Quaternion());
+        this.camera = new Camera(new Vector3f(0, 5.5f, 17f), new Quaternion());
 
         this.addChild(this.flapsLR);
         this.addChild(this.flapsUD);
@@ -41,7 +42,11 @@ public class Submarine extends Entity {
         this.addChild(this.camera);
 
         this.speed = 0;
+        this.rotSpeedF = 0;
+        this.rotSpeedR = 0;
+        this.rotSpeedU = 0;
     }
+
     /* Getters */
     public Vector3f getGlobalPosition() {
         Matrix4f parentTransform = this.getParent().getGlobalTransform();
@@ -50,55 +55,82 @@ public class Submarine extends Entity {
         return new Vector3f(global.x, global.y, global.z);
     }
 
-    public Camera getCamera() { return this.camera; }
+    public Camera getCamera() {
+        return this.camera;
+    }
 
-    public Light getLight() { return this.light; }
+    public Light getLight() {
+        return this.light;
+    }
 
     public void move(float dt) {
-        Vector3f right = Maths.getAxis(new Quaternion(), "right");
-        Vector3f up = Maths.getAxis(new Quaternion(), "up");
-        Vector3f forward = Maths.getAxis(new Quaternion(), "forward");
         Vector3f velocity = Maths.getAxis(rotation, "forward");
 
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) speed = Math.min(speed + ACCELERATION * dt, MAX_SPEED);
-        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) speed = Math.max(speed - ACCELERATION * dt, -MAX_SPEED);
-        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) speed = 0;
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) speed = Math.min(speed + ACCELERATION * dt, MAX_SPEED);
+        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) speed = Math.max(speed - ACCELERATION * dt, -MAX_SPEED);
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            speed = 0;
+            rotSpeedF = 0;
+            rotSpeedR = 0;
+            rotSpeedU = 0;
+        }
         velocity.scale(speed);
         this.position = Vector3f.add(position, velocity, null);
-        if(speed != 0) dirty = true;
+        if (speed != 0) dirty = true;
 
+        updateRotation(dt);
 
-        float angularSpeed = 30 * dt;
-        if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            Quaternion r = Maths.createFromAxisAngle(right, angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        updatePropelers(dt);
+    }
+
+    private void updateRotation(float dt) {
+        Vector3f forward = Maths.getAxis(new Quaternion(), "forward");
+        Vector3f up = Maths.getAxis(new Quaternion(), "up");
+        Vector3f right = Maths.getAxis(new Quaternion(), "right");
+        Quaternion r;
+
+        float rotAcc = .2f * (MAX_SPEED - Math.abs(speed));
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            rotSpeedR += rotAcc;
+            rotSpeedR = Math.min(rotSpeedR, MAX_ROTATION_SPEED);
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            Quaternion r = Maths.createFromAxisAngle(right, -angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            rotSpeedR -= rotAcc;
+            rotSpeedR = Math.max(rotSpeedR, -MAX_ROTATION_SPEED);
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            Quaternion r = Maths.createFromAxisAngle(up, -angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            rotSpeedU -= rotAcc;
+            rotSpeedU = Math.max(rotSpeedU, -MAX_ROTATION_SPEED);
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            Quaternion r = Maths.createFromAxisAngle(up, angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            rotSpeedU += rotAcc;
+            rotSpeedU = Math.min(rotSpeedU, MAX_ROTATION_SPEED);
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
-            Quaternion r = Maths.createFromAxisAngle(forward, angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            rotSpeedF += rotAcc;
+            rotSpeedF = Math.min(rotSpeedF, MAX_ROTATION_SPEED);
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_E)){
-            Quaternion r = Maths.createFromAxisAngle(forward, -angularSpeed);
-            Quaternion.mul(r, rotation, rotation);
-            dirty = true;
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            rotSpeedF -= rotAcc;
+            rotSpeedF = Math.max(rotSpeedF, -MAX_ROTATION_SPEED);
         }
+
+        r = Maths.createFromAxisAngle(right, rotSpeedR * dt);
+        Quaternion.mul(r, rotation, rotation);
+        r = Maths.createFromAxisAngle(up, rotSpeedU * dt);
+        Quaternion.mul(r, rotation, rotation);
+        r = Maths.createFromAxisAngle(forward, rotSpeedF * dt);
+        Quaternion.mul(r, rotation, rotation);
+
+        dirty = true;
+    }
+
+    private void updatePropelers(float dt) {
+        float rotationSpeed = 720 * speed * 20;
+        Quaternion r = propelers.getRotation();
+        Vector3f forward = Maths.getAxis(new Quaternion(), "back");
+        Quaternion rx = Maths.createFromAxisAngle(forward, rotationSpeed * dt);
+        Quaternion.mul(rx, r, r);
+        propelers.setRotation(r);
     }
 }

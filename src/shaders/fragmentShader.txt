@@ -4,6 +4,7 @@ in vec3 fragmentPosition;
 in vec2 textureCoordinates;
 in vec3 normal;
 in vec3 viewPosition;
+in float fogFactor;
 
 out vec4 FragColor;
 
@@ -29,11 +30,11 @@ struct PointLight {
     vec3 specular;
 };
 
-//uniform vec3 lightPosition;
-//uniform vec3 lightColor;
 uniform PointLight pointLight[10];
 uniform Material material;
 uniform sampler2D modelTexture;
+
+const vec3 bgColor = vec3(0.3, 0.3, 0.7);
 
 //                              direction       ambient         diffuse         specular
 DirLight dirLight = DirLight(vec3(0, -1, -1), vec3(0, 0, 0), vec3(0.25, 0.25, 0.4), vec3(0.05, 0.05, 0.05));
@@ -42,32 +43,6 @@ vec3 calculateDirectionalLight(DirLight light, vec3 normal, vec3 viewDirection);
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection);
 
 void main(void) {
-    // Color of the fragment based on texture
-    //vec3 objectColor = texture(modelTexture, textureCoordinates).xyz;
-
-    // Ambient lighting
-    //vec3 ambient = vec3(0.1) * (lightColor * material.ambient);
-
-    //vec3 lightDir = normalize(lightPosition - fragmentPosition);
-    //vec3 norm = normalize(normal);
-
-    // Diffuse lighting
-    //float diff = max(dot(norm, lightDir), 0.0);
-    //vec3 diffuse = lightColor * (diff * material.diffuse);
-
-    // Specular lighting
-    //vec3 reflectDir = reflect(-lightDir, norm);
-    //vec3 viewDir = normalize(viewPosition - fragmentPosition);
-    // 32 -> shininess, lower the value -> the light will spread more
-    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    //vec3 specular = lightColor * (spec * material.specular);
-
-
-    //vec3 result = (ambient + diffuse + specular) * objectColor;
-    //result = result + calculateDirectionalLight(dirLight, norm, viewDir) * objectColor;
-    //FragColor = vec4(result, 1.0);
-
-    // -------------------------------------------------------------------------------------------
     vec3 norm = normalize(normal);
     vec3 viewDir = normalize(viewPosition - fragmentPosition);
 
@@ -77,7 +52,12 @@ void main(void) {
         result += calculatePointLight(pointLight[i], norm, fragmentPosition, viewDir);
     }
 
+    // result without fog
     result = result * texture(modelTexture, textureCoordinates).xyz;
+
+    // add fog
+    result = mix(bgColor, result, fogFactor); // fogFactor: 0 -> bgColor, fogFactor: 1 -> no fog
+
     FragColor = vec4(result, 1.0);
 }
 
