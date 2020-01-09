@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ribice:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ribice_jar</output-path>
+    <root id="archive" name="ribice.jar">
+      <element id="module-output" name="ribice" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jars/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jars/lwjgl_util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jars/slick-util.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ribice:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c64dbc54-997e-4e06-80aa-cc5e3554f785" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Maths.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Maths.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature_lighting" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="CREATE_PULL_REQUEST_DEFAULT_BRANCH" value="master" />
+    <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_USER" value="Gnortss" />
+    <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_NAME" value="Ribice" />
+  </component>
+  <component name="ProjectId" id="1T7Wv4PNyFGVyMlwaQLCxg6eGNA" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.24687934" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.statistic.project.settings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/models" />
+      <recent name="$PROJECT_DIR$/res/textures" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainLoop">
+    <configuration name="MainLoop" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="engineTester.MainLoop" />
+      <module name="ribice" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=libs/natives/linux" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="engineTester.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TheQuadExampleDrawArrays" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TheQuadExampleDrawArrays" />
+      <module name="ribice" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=libs/natives/linux" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MainLoop" />
+      <item itemvalue="Application.TheQuadExampleDrawArrays" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainLoop" />
+        <item itemvalue="Application.TheQuadExampleDrawArrays" />
+        <item itemvalue="Application.MainLoop" />
+        <item itemvalue="Application.TheQuadExampleDrawArrays" />
+        <item itemvalue="Application.MainLoop" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c64dbc54-997e-4e06-80aa-cc5e3554f785" name="Default Changelist" comment="" />
+      <created>1572811841253</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572811841253</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Starting engine from ThinMatrix tutorial">
+      <created>1572813729610</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1572813729610</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added support for multiple light sources">
+      <created>1572892150617</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1572892150617</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added attenuation to Light Entity and shader calculations">
+      <created>1572896808752</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1572896808752</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed some issues with last two merges">
+      <created>1572897963131</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1572897963131</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Each entity can now contain a lineModel. If it contains a model and debuggin is turned on in MasterRenderer class then those lines are drawn.&#10;&#10; - Added seperate vertex and fragment shaders&#10; - New StaticLineShader class&#10; - and renderLine method in Renderer class">
+      <created>1572983273705</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1572983273705</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added fish model for fun">
+      <created>1572988492096</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1572988492096</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added fish model for fun">
+      <created>1573511625386</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1573511625386</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Rewritten game engine&#10;&#10;Notable changes:&#10; - DisplayManager -&gt; WindowManager&#10; - RawModel -&gt; Model&#10; - ModelTexture -&gt; Material&#10; - Renderer + MasterRenderer -&gt; Renderer&#10; - ShaderProgram + StaticShader -&gt; DefaultShader&#10; - no more support for multiple light">
+      <created>1574198656350</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1574198656350</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fixed a minor issue with materials">
+      <created>1574198973731</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1574198973731</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Testing Scene building">
+      <created>1574888605649</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1574888605649</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added model for submarine">
+      <created>1576172926142</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1576172926142</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Rotations of Node's are now represented with Quaternions">
+      <created>1576696531743</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1576696531743</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Cleaned some code">
+      <created>1576696717713</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1576696717713</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Maths.getAxis( new Quaternion(), &quot;forward&quot; ) was returning **back** Vector3f">
+      <created>1576697060258</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1576697060258</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Shader now uses closest 10 point lights to submarine and a directional light">
+      <created>1576790373347</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1576790373347</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fixed merge issues">
+      <created>1578085844644</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1578085844645</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fixed merge issues">
+      <created>1578085923362</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1578085923362</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fish are bigger and submarine controls are smoother but harder">
+      <created>1578355337804</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1578355337804</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added coins, more lights, new map, collision for coins, coins are removed when collided">
+      <created>1578440995266</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1578440995267</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="Starting engine from ThinMatrix tutorial" />
+    <MESSAGE value="Added support for multiple light sources" />
+    <MESSAGE value="Added attenuation to Light Entity and shader calculations" />
+    <MESSAGE value="Fixed some issues with last two merges" />
+    <MESSAGE value="Each entity can now contain a lineModel. If it contains a model and debuggin is turned on in MasterRenderer class then those lines are drawn.&#10;&#10; - Added seperate vertex and fragment shaders&#10; - New StaticLineShader class&#10; - and renderLine method in Renderer class" />
+    <MESSAGE value="Added fish model for fun" />
+    <MESSAGE value="Rewritten game engine&#10;&#10;Notable changes:&#10; - DisplayManager -&gt; WindowManager&#10; - RawModel -&gt; Model&#10; - ModelTexture -&gt; Material&#10; - Renderer + MasterRenderer -&gt; Renderer&#10; - ShaderProgram + StaticShader -&gt; DefaultShader&#10; - no more support for multiple light" />
+    <MESSAGE value="Fixed a minor issue with materials" />
+    <MESSAGE value="Testing Scene building" />
+    <MESSAGE value="Added model for submarine" />
+    <MESSAGE value="Rotations of Node's are now represented with Quaternions" />
+    <MESSAGE value="Cleaned some code" />
+    <MESSAGE value="Maths.getAxis( new Quaternion(), &quot;forward&quot; ) was returning **back** Vector3f" />
+    <MESSAGE value="Shader now uses closest 10 point lights to submarine and a directional light" />
+    <MESSAGE value="fixed merge issues" />
+    <MESSAGE value="fish are bigger and submarine controls are smoother but harder" />
+    <MESSAGE value="added coins, more lights, new map, collision for coins, coins are removed when collided" />
+    <option name="LAST_COMMIT_MESSAGE" value="added coins, more lights, new map, collision for coins, coins are removed when collided" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="843" y="293" width="800" height="684" key="#Template" timestamp="1578391345739">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="843" y="293" width="800" height="684" key="#Template/0.27.1920.1173@0.27.1920.1173" timestamp="1578391345739" />
+    <state x="73" y="271" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578527805728">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="73" y="271" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578527805728" />
+    <state x="768" y="317" width="374" height="599" key="#com.intellij.ide.util.MemberChooser" timestamp="1578439232218">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="768" y="317" width="374" height="599" key="#com.intellij.ide.util.MemberChooser/0.27.1920.1173@0.27.1920.1173" timestamp="1578439232218" />
+    <state x="236" y="379" width="525" height="435" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1578526797538">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="236" y="379" width="525" height="435" key="#com.intellij.ide.util.TreeClassChooserDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578526797538" />
+    <state x="693" y="362" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1576790052938">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="693" y="362" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1576790052938" />
+    <state x="566" y="210" width="777" height="814" key="CommitChangelistDialog2" timestamp="1578440995177">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="566" y="210" width="777" height="814" key="CommitChangelistDialog2/0.27.1920.1173@0.27.1920.1173" timestamp="1578440995177" />
+    <state x="131" y="332" width="735" height="520" key="FileChooserDialogImpl" timestamp="1578527333595">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="131" y="332" width="735" height="520" key="FileChooserDialogImpl/0.27.1920.1173@0.27.1920.1173" timestamp="1578527333595" />
+    <state x="674" y="482" width="1048" height="530" key="Github.CreatePullRequestDialog" timestamp="1578085527336">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="674" y="482" width="1048" height="530" key="Github.CreatePullRequestDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578085527336" />
+    <state width="1874" height="260" key="GridCell.Tab.0.bottom" timestamp="1578520122890">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="260" key="GridCell.Tab.0.bottom/0.27.1920.1173@0.27.1920.1173" timestamp="1578520122890" />
+    <state width="1874" height="260" key="GridCell.Tab.0.center" timestamp="1578520122890">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="260" key="GridCell.Tab.0.center/0.27.1920.1173@0.27.1920.1173" timestamp="1578520122890" />
+    <state width="1874" height="260" key="GridCell.Tab.0.left" timestamp="1578520122890">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="260" key="GridCell.Tab.0.left/0.27.1920.1173@0.27.1920.1173" timestamp="1578520122890" />
+    <state width="1874" height="260" key="GridCell.Tab.0.right" timestamp="1578520122890">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="260" key="GridCell.Tab.0.right/0.27.1920.1173@0.27.1920.1173" timestamp="1578520122890" />
+    <state width="1874" height="388" key="GridCell.Tab.1.bottom" timestamp="1578355349699">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="388" key="GridCell.Tab.1.bottom/0.27.1920.1173@0.27.1920.1173" timestamp="1578355349699" />
+    <state width="1874" height="388" key="GridCell.Tab.1.center" timestamp="1578355349699">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="388" key="GridCell.Tab.1.center/0.27.1920.1173@0.27.1920.1173" timestamp="1578355349699" />
+    <state width="1874" height="388" key="GridCell.Tab.1.left" timestamp="1578355349699">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="388" key="GridCell.Tab.1.left/0.27.1920.1173@0.27.1920.1173" timestamp="1578355349699" />
+    <state width="1874" height="388" key="GridCell.Tab.1.right" timestamp="1578355349699">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state width="1874" height="388" key="GridCell.Tab.1.right/0.27.1920.1173@0.27.1920.1173" timestamp="1578355349699" />
+    <state x="143" y="163" width="900" height="866" key="SettingsEditor" timestamp="1578528352783">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="143" y="163" width="900" height="866" key="SettingsEditor/0.27.1920.1173@0.27.1920.1173" timestamp="1578528352783" />
+    <state x="539" y="304" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1578530191353">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="539" y="304" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.1173@0.27.1920.1173" timestamp="1578530191353" />
+    <state x="877" y="350" width="781" height="718" key="VcsDiffUtil.ChangesDialog" timestamp="1578085463642">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="877" y="350" width="781" height="718" key="VcsDiffUtil.ChangesDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578085463642" />
+    <state x="632" y="509" width="646" height="215" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1576081764027">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="632" y="509" width="646" height="215" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.27.1920.1173@0.27.1920.1173" timestamp="1576081764027" />
+    <state x="728" y="533" width="464" height="167" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578528708014">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="728" y="533" width="464" height="167" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.27.1920.1173@0.27.1920.1173" timestamp="1578528708014" />
+    <state x="719" y="407" width="471" height="420" key="git4idea.merge.GitMergeDialog" timestamp="1578339512113">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="719" y="407" width="471" height="420" key="git4idea.merge.GitMergeDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578339512113" />
+    <state x="664" y="407" width="581" height="455" key="git4idea.merge.GitPullDialog" timestamp="1578085873421">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="664" y="407" width="581" height="455" key="git4idea.merge.GitPullDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1578085873421" />
+    <state x="176" y="232" width="598" height="769" key="refactoring.ChangeSignatureDialog" timestamp="1576688890669">
+      <screen x="0" y="27" width="1920" height="1173" />
+    </state>
+    <state x="176" y="232" width="598" height="769" key="refactoring.ChangeSignatureDialog/0.27.1920.1173@0.27.1920.1173" timestamp="1576688890669" />
+  </component>
+</project>

@@ -1,5 +1,12 @@
 # Ribice
 
+## How to play
+ 
+ **FOLLOW:**
+ 1. Open terminal/cmd... in the **root** of this project
+ 2. Change ```<YOUR_OS>``` to your OS -> e.g. windows or linux or macos(not tested)
+ 3. Run ```java -Djava.library.path=libs/natives/<YOUR_OS> -jar ./out/artifacts/ribice_jar/ribice.jar```
+
 ## Project setup for IntelliJ IDEA
 
 Clone project:

@@ -1,0 +1,43 @@
+#version 400 core
+
+in vec3 position;
+in vec2 aTextureCoordinates;
+in vec3 aNormal;
+
+out vec3 fragmentPosition;
+out vec2 textureCoordinates;
+out vec3 normal;
+out vec3 viewPosition;
+out float fogFactor;
+
+uniform mat4 trans;
+uniform mat4 view;
+uniform mat4 proj;
+
+const float density = 0.007;
+const float gradient = 3.0;
+
+void main(void) {
+
+    // Convert position and normal to world space
+    vec4 vertexPos = trans * vec4(position, 1.0);
+    fragmentPosition = vertexPos.xyz;
+
+    // Eye space position
+    vec4 vertexEyePos = view * vertexPos;
+    float distance = length(vertexEyePos.xyz);
+    fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0);
+
+    gl_Position = proj * vertexEyePos;
+    textureCoordinates = aTextureCoordinates;
+
+    // 4th component of aNormal iz 0.0 so we ignore the translation part of the transformation matrix
+    normal = (trans * vec4(aNormal, 0.0)).xyz;
+
+    //lightDirection = vec4(lightPos, 1.0).xyz - vertexPos.xyz;
+    //lightPosition = lightPos;
+
+    //TODO: zelo slaba praksa (zelo neucinkovito) -- raj posiljej global pozicijo kamere
+    viewPosition = (inverse(view) * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+
+}

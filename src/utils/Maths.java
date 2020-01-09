@@ -94,7 +94,7 @@ public class Maths {
 
     public static Matrix4f createProjectionMatrix(float FOV){
         float NEAR_PLANE = 0.1f;
-        float FAR_PLANE = 1000f;
+        float FAR_PLANE = 300f;
 
         float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
         float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
