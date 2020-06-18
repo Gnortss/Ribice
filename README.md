@@ -1,4 +1,19 @@
 # Ribice
+## About
+
+School project for Course **Racunalniska grafika**.
+
+A boid simulation/exploration type game made with LWJGL 2.0 in Java.
+
+User controls a submarine and starts in a demo world. He can explore the world by controlling the submarine
+and collect coins as a bonus.
+
+![Demo video]()
+
+This project demonstrates use of projection, transformation matrices, Phong interpolation,
+point and direction light, simple collision detection.
+
+It also uses a scene graph, a hierarchial tree containing all the objects in a scene.
 
 Simulation of underwater life?
 
