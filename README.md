@@ -15,7 +15,6 @@ point and direction light, simple collision detection.
 
 It also uses a scene graph, a hierarchial tree containing all the objects in a scene.
 
-Simulation of underwater life?
 
 ## How to play
  
