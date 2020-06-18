@@ -8,7 +8,7 @@ A boid simulation/exploration type game made with LWJGL 2.0 in Java.
 User controls a submarine and starts in a demo world. He can explore the world by controlling the submarine
 and collect coins as a bonus.
 
-![Demo video]()
+![Demo video](https://github.com/Gnortss/Ribice/blob/master/demo.gif)
 
 This project demonstrates use of projection, transformation matrices, Phong interpolation,
 point and direction light, simple collision detection.
